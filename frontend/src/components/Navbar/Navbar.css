@@ -1,0 +1,179 @@
+/* Estilos para la barra de navegación */
+.navbar {
+    padding: 20px 0px; /* Espaciado arriba y abajo */
+    display: flex; /* Usa flexbox para alinear elementos */
+    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    align-self: center; /* Centra la barra de navegación */
+  }
+  
+  .navbar .logo {
+    width: 100px; /* Ancho del logo */
+  }
+  
+  .navbar .navbar-menu {
+    display: flex; /* Usa flexbox para alinear elementos */
+    list-style: none; /* Quita los puntos de la lista */
+    gap: 20px; /* Espaciado entre elementos */
+    color: #2aa0cf; /* Color de los elementos */
+    font-size: 18px; /* Tamaño de la fuente */
+    justify-content: space-around; /* O usa space-between si prefieres */
+    align-items: center;
+  }
+  
+  .navbar-right {
+    display: flex; /* Usa flexbox para alinear elementos */
+    align-items: center; /* Alinea los elementos verticalmente */
+    gap: 40px; /* Espaciado entre elementos */
+  }
+  
+  .navbar button {
+    background: transparent;
+    padding: 10px 20px; /* Espaciado arriba y abajo */
+    border: 1px solid #ffffff; /* Borde del botón */
+    color: #2aa0cf; /* Color del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    border-radius: 50px; /* Borde redondeado */
+    transition: all 0.5s; /* Transición al pasar por encima */
+  }
+  
+  .navbar button:hover {
+    background:  #2aa0cf; /* Color de fondo al pasar por encima */
+    color: white; /* Color del texto al pasar por encima */
+  }
+  
+  /*la linea marroncita al raz de cada seccion de la barra de naveagcion*/
+  .navbar .active {
+    padding-bottom: 2 px;
+    border-bottom: 3px solid;
+  }
+  /*para que el cursos sea una manito y no una flecha jejeje*/
+  .navbar li {
+    cursor: pointer;
+  }
+  .navbar-search-icon {
+    position: relative;
+  }
+  
+  /*para laconfiguracion del icono de pedidos*/
+  .navbar-search-icon .dot {
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: rgb(32, 107, 220);
+    border-radius: 5px;
+    top: -8px;
+    right: -8px;
+  }
+@media (max-width:1050px) {
+  .navbar .logo{
+    width: 140px;
+  }
+  .navbar-menu{
+    gap: 20px;
+    font-size: 17px;
+  }
+  .navbar-right{
+    gap: 30px;
+  }
+  .navbar-right img{
+    width: 22px;
+  }
+  .navbar-right button{
+    padding: 8px 25px;
+  }
+}
+
+.navbar-profile{
+  position: relative; /* Posición relativa */
+}
+
+.nav-profile {
+  position: relative; /* Permite que el dropdown se posicione de forma absoluta */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Estilos del menú desplegable */
+.nav-profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 90%; /* Evita que el menú toque el perfil */
+  display: flex;
+  flex-direction: column;
+  background-color: #2aa0cf; /* Azul con ligera transparencia */
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #ecf1f7;
+  outline: 2px solid white;
+  list-style: none;
+  z-index: 1000; /* Asegura que quede encima de otros elementos */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  
+  /* Efecto inicial oculto */
+  opacity: 0;/* Opacidad inicial */
+  transform: translateY(-10px);/* Desplazamiento hacia arriba */
+  transition: opacity 0.5s ease-in-out, transform 1s ease-in-out;/* Transición suave */
+  pointer-events: none; /* Evita que el menú sea clickeable cuando está oculto */
+}
+
+/* Mostrar el menú al hacer hover */
+.navbar-profile:hover .nav-profile-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* Permite la interacción */
+}
+
+/* Estilo de los elementos dentro del menú */
+.nav-profile-dropdown li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: white;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 1s ease-in-out;
+}
+
+.nav-profile-dropdown li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Flecha indicadora */
+.nav-profile-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgba(87, 201, 233, 0.95) transparent;
+}
+
+@media (max-width:900px) {
+  .navbar .logo{
+    width: 120px;
+  }
+  .navbar-menu{
+    gap: 15px;
+    font-size: 16px;
+  }
+  .navbar-right{
+    gap: 20px;
+  }
+  .navbar-right img{
+    width: 20px;
+  }
+  .navbar-right button{
+    padding: 7px 20px;
+    font-size: 15px;
+  }
+}
+@media (max-width:750px) {
+  .navbar-menu{
+    display: none;
+  }
+}

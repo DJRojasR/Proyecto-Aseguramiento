@@ -1,0 +1,69 @@
+/*Estilos de cada item de Top dishes near you*/
+
+.food-item {
+  width: 100%;/*ancho del item*/
+  margin: auto; /*centrar*/
+  border-radius: 15px;/*bordes redondeados*/
+  box-shadow: 0px 0px 10px #000015;/*sombra*/
+  transition: 0.3s;/*transicion*/
+  animation: fadeIn 1s;/*animacion*/
+}
+.food-item-image {
+  width: 100%;/*ancho de la imagen*/
+  border-radius: 15px 15px 0px 0px;/*bordes redondeados*/
+}
+.food-item-info {
+  padding: 10px;/*espaciado*/
+}
+.food-item-name-rating {
+  display: flex;/*flexbox*/
+  justify-content: space-between;/*justificar contenido*/
+  align-items: center;/*alinear elementos*/
+  margin-bottom: 10px;/*espaciado*/
+}
+.food-item-name-rating p {
+  font-size: 15px;/*tamaño de la fuente*/
+  font-weight: 500;/* peso de la fuente*/
+}
+.food-item-name-rating img {
+  width: 70px;/*ancho de la imagen*/
+}
+.food-item-desc {
+  color: #000015;/*color del texto*/
+  font-size: 10px;/*tamaño de la fuente*/
+}
+.food-item-price {
+  font-size: 20px;/*tamaño de la fuente*/
+  color: rgb(32, 107, 220);/*color del texto*/
+  font-weight: 500;
+  margin: 10px 0px;
+}
+.food-item-img-container {
+  position: relative;/*posicion relativa*/
+}
+.food-item-img-container .add {
+  width: 35px;/*ancho del boton*/
+  position: absolute;/*posicion absoluta*/
+  bottom: 15px;/*posicion en la parte inferior*/
+  right: 15px;/*posicion en la parte derecha*/
+  cursor: pointer;  /*cursor*/
+  border-radius: 50%;/*bordes redondeados*/
+}
+.food-item-counter{
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  border-radius: 50px;
+  background-color: white;
+}
+.food-item-counter img{
+  width: 30px;
+}
+
+.food-item {
+  margin-bottom: 50px; /* se agrego este margen para separar los items de comida */
+}

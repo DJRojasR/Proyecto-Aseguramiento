@@ -1,0 +1,15 @@
+/*estilos para el contenido de la carta top dishes*/
+.food-display {
+  margin-top: 30px; /* margen superior*/
+}
+.food-display h2 {
+  font-size: max(2vw, 24px);/* tamaño de la fuente que tiene que ser el maximo entre 2vw y 24px*/
+  font-weight: 600;/* peso de la fuente*/
+}
+.food-display-list {
+  display: grid; /* cuadricula para la visualizacion */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));/*Se repite el tamaño minimo de 240px y el maximo de 1fr*/
+  margin-top: 30px;/* margen superior*/
+  gap: 30px;/* espacio entre los elementos*/
+  row-gap: 50px;/* espacio entre las filas*/
+}

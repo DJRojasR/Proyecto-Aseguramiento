@@ -1,0 +1,145 @@
+.cart{
+    margin-top: 100px;
+}
+
+.cart-items-title{
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr 1fr 1fr;
+    align-items: center;
+    color: grey;
+    font-size: max(1vw, 10px);
+}
+
+.cart-items-item{
+    margin: 10px 0;
+    color: black;
+}
+
+.cart-items-item img{
+    width: 50px
+}
+
+.cart-items-item button {
+    padding: 3px 0px;/*Espacio interno*/
+    width: max(4.5vw,50px);
+    background-color: rgb(231, 31, 31);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Transición suave */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el mouse */
+.cart-items-item button:hover {
+    background-color: red; /* Cambia el color */
+    transform: scale(1.1); /* Aumenta un 10% el tamaño */
+}
+
+/* Efecto al hacer clic */
+.cart-items-item button:active {
+    transform: scale(0.95); /* Reduce un poco al hacer clic */
+}
+
+.cart-bottom{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    gap: max(12vw, 20px);
+}
+
+.cart-total{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-total-details{
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+}
+
+.cart-total hr{
+    margin: 10px 0;
+
+}
+.cart-total button{
+    
+    background-color: rgb(24, 210, 24);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    align-self: center;/*Para centrarlo en el medio*/
+    justify-content: center;
+    width: max(15vw,200px);
+    padding: 12px 0px;/*Espacio interno*/
+    /* Transición suave */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el mouse */
+.cart-total button:hover {
+    background-color: rgb(3, 233, 3); /* Cambia el color */
+    transform: scale(1.1); /* Aumenta un 10% el tamaño */
+}
+
+/* Efecto al hacer clic */
+.cart-total button:active {
+    transform: scale(0.95); /* Reduce un poco al hacer clic */
+}
+
+.cart-promocode{
+    flex:1;
+}
+
+.cart-promocode p{
+    color: #555;
+}
+
+.cart-promocode-input{
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eaeaea;
+    border-radius: 4px;
+}
+
+.cart-promocode-input input{
+    background: transparent;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+}
+
+.cart-promocode-input button{
+    width: max(9.5vw,150px);
+    padding: 12px 5px;
+    background-color: black;
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+
+@media(max-width: 750px){
+    .cart-bottom{
+        flex-direction: column-reverse;
+    }
+    .cart-promocode{
+        justify-content: start;
+    }
+}

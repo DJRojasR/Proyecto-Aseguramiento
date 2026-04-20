@@ -1,0 +1,48 @@
+.users-section .list-table-format {
+  display: grid;
+  grid-template-columns: 1fr 2fr 0.5fr;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #cacacaca;
+  font-size: 13px;
+}
+
+.users-section .list-table-format.title {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 600px) {
+  .users-section .list-table-format {
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 15px;
+  }
+  .users-section .list-table-format.title {
+    display: none;
+  }
+}
+
+.cursor {
+	padding: 3px 0px; /*Espacio interno*/
+	width: max(4.5vw, 50px);
+	background-color: rgb(231, 31, 31);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 11px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s ease-in-out;
+}
+
+.cursor:hover {
+	background-color: red;
+	transform: scale(1.1);
+}
+
+.cursor:active {
+	transform: scale(0.95);
+}

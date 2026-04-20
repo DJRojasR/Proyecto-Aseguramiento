@@ -1,0 +1,62 @@
+.order-item {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr;
+  align-items: start   ;
+  gap: 30px;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  margin: 30px 0px;
+  font-size: 14px;
+  color: #505050
+}
+
+.order-item-food, .order-item-name{
+    font-weight: 600;
+}
+
+.order-item-name{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.order-item-address{
+    margin-bottom: 20px;
+}
+
+.order-item select {
+    background-color: #e0f7fa; /* celeste claro */
+    border: 1px solid #81d4fa; /* borde azul suave */
+    padding: 5px 10px;/* padding superior 5px, inferior 5px, izquierdo 10px, derecho 10px */
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .order-item select:hover {
+    background-color: #b2ebf2; /* un poco más intenso al pasar el mouse */
+  }
+  
+
+  @media (max-width: 600px) {
+    .order-item {
+      font-size: 12px;
+      grid-template-columns: 1fr; /* 1 sola columna para que se apile */
+      padding: 10px 6px;
+      gap: 10px;
+    }
+  
+    .order-item select {
+        padding: 3px 6px; /* Reduzco el padding para hacerlo más pequeño */
+        font-size: 12px; /* Hago el texto más pequeño */
+        width: 170px; 
+    }
+  
+    .order-item img {
+      width: 50px;
+      height: auto;
+    }
+  }
+  

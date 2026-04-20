@@ -1,0 +1,63 @@
+.header {
+  height: 45vw; /* 45% del ancho de la pantalla */
+  margin: 30px auto; /* 30px de margen arriba y abajo y centrado horizontal */
+  background: url("/logo_central.png") no-repeat; /* Imagen de fondo */
+  border-radius: 20px; /* Bordes redondeados */
+  background-size: contain; /* La imagen se ajusta al tamaño del contenedor */
+  position: relative; /* Posición relativa */
+}
+
+.header-contents {
+  position: absolute; /* Posición absoluta */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Columna */
+  align-items: start; /* Alineación a la izquierda */
+  gap: 1.5vw; /* Espacio entre elementos */
+  max-width: 50%; /* Máximo ancho del 50% */
+  bottom: 10%; /* 10% de margen inferior */
+  left: 6vw; /* 6% de margen izquierdo */
+  animation: fadeIn 2.5s; /* Animación de entrada de 1 segundo */
+}
+
+.header-contents h2 {
+  font-size: max(2.5vw, 5px); /* Asegura un tamaño mínimo de 10px */
+  color: rgb(255, 255, 255);
+}
+
+.header-contents p {
+  color: rgb(242, 244, 245);
+  font-size: max(1.5vw, 10px); /* Asigna un tamaño mínimo de 14px */
+}
+
+.header-contents button {
+  font-weight: 150; /* Grosor de la fuente */
+  color: #0a0a0a; /* Color de la fuente */
+  font-size: max(1vw); /* Tamaño de la fuente */
+  background-color: rgb(255, 255, 255); /* Color de fondo */
+  border: none;
+  padding: 0.7vw 1.5vw; /* Relleno */
+  border-radius: 50px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de puntero */
+  transition: 0.5s; /* Transición de 0.5 segundos */
+}
+
+.header-contents button:hover {
+  background-color: #73cef2; /* Color de fondo al pasar el cursor */
+  color: rgb(255, 255, 255); /* Color de la fuente al pasar el cursor */
+}
+@media (max-width:1050px) {
+  .header-contents{
+    max-width: 45%;
+  }
+}
+@media (max-width:750px) {
+  .header-contents{
+    max-width: 65%;
+  }
+  .header-contents p{
+    display: none;
+  }
+  .header-contents button{
+    padding: 2vw 4vw;
+  }
+}

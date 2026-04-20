@@ -1,0 +1,83 @@
+.explore-menu {
+    display: flex; /* Flexbox */
+    flex-direction: column; /* Columna */
+    gap: 20px; /* Espacio entre elementos */
+  }
+  
+  .explore-menu h1 {
+    color: #262626; /* Color de fuente */
+    font-weight: 500; /* Grosor de la fuente */
+  }
+  
+  .explore-menu-text {
+    color: #262626; /* Color de fuente */
+  }
+  
+  .explore-menu-list {
+    display: flex;
+    justify-content: flex-start; /* Distribución uniforme */
+    align-items: center;
+    text-align: center; /* Alineación centrada */
+    margin: 20px 0px; /* 20px de margen arriba y abajo */
+    gap: 5px; /* Espacio uniforme entre elementos */
+    padding: 10px 0px; /* Espacio a los lados */
+    overflow-x: auto; /* Cambié scroll a auto */
+    white-space: nowrap; /* Evita que los elementos se desborden */
+    padding-left: 10px; /* Reduce espacio en los bordes */
+    padding-right: 5px; /* Reduce espacio en los bordes */
+
+    padding-bottom: 50px;
+  }
+  
+  .explore-menu-item {
+    min-width: 225px; /* Mantiene los elementos con un tamaño uniforme */
+    max-width: 150px;
+    flex-shrink: 0; /* Evita que los elementos se reduzcan y generen espacios extra */
+  }
+  
+  .explore-menu-item img {
+    width: clamp(190px, 6.5vw, 230px); /* Mantiene tamaños consistentes */
+    height: clamp(170px, 8.5vw, 200px);
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 10px; /* Bordes redondeados */
+    transition: transform 0.2s ease-in-out; /* Suavizar transiciones */
+  }
+  
+  /* Añadir efecto al pasar el mouse */
+  .explore-menu-item img:hover {
+    transform: scale(1.1); /* Aumentar tamaño ligeramente */
+  }
+  
+  .explore-menu-list::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .explore-menu-list::-webkit-scrollbar-thumb {
+    background-color: #b7bec2;
+    border-radius: 10px;
+  }
+
+  .explore-menu-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .explore-menu-item p {
+    margin-top: 10px; /* 10px de margen superior */
+    font-size: max(1vw, 14px); /* Tamaño de fuente mínimo de 14px */
+    color: #747474; /* Color de fuente */
+    cursor: pointer; /* Cursor de puntero */
+  }
+  
+  .explore-menu hr {
+    margin: 10px 0px; /* 10px de margen arriba y abajo */
+    height: 2px; /* Altura de 2px */
+    background-color: #e2e2e2; /* Color de fondo */
+    border: none; /* Sin borde */
+  }
+@media (max-width:1050px) {
+  .explore-menu-text{
+    max-width: 100%;
+    font-size: 14px;
+  }
+}

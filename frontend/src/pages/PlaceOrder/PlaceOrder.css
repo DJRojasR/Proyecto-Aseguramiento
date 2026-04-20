@@ -1,0 +1,48 @@
+/* Contenedor principal del formulario de pedido */
+.place-order {
+	display: flex; /* Alinea los elementos en fila */
+	align-items: start; /* Alinea los elementos al inicio verticalmente */
+	justify-content: space-between; /* Separa los elementos con el máximo espacio posible */
+	gap: 50px; /* Espacio entre elementos */
+	margin-top: 100px; /* Espaciado superior */
+}
+
+/* Sección izquierda del formulario de pedido */
+.place-order-left {
+	width: 100%;
+	max-width: max(30%, 500px); /* Limita el ancho al 30% o un máximo de 500px */
+}
+
+/* Título de la sección izquierda */
+.place-order-left .title {
+	font-size: 30px; /* Tamaño grande para destacar */
+	font-weight: 600; /* Fuente semi-negrita */
+	margin-bottom: 50px; /* Espaciado inferior */
+}
+
+/* Campos de entrada del formulario */
+.place-order-left input {
+	margin-bottom: 15px; /* Espaciado entre inputs */
+	width: 100%; /* Ocupa todo el ancho del contenedor */
+	padding: 10px; /* Espaciado interno */
+	border: 1px solid #c5c5c5; /* Borde sutil */
+	border-radius: 4px; /* Bordes redondeados */
+	outline-color: black; /* Color del contorno al enfocar */
+}
+
+/* Contenedor para campos múltiples en una sola línea */
+.place-order-left .multi-fields {
+	display: flex; /* Alinea los campos en una fila */
+	gap: 10px; /* Espacio entre los campos */
+}
+
+/* Sección derecha del formulario */
+.place-order-right {
+	width: 100%;
+	max-width: max(40%, 500px); /* Limita el ancho al 40% o un máximo de 500px */
+}
+
+/* Botón de confirmación dentro del resumen del carrito */
+.place-order .cart-total button {
+	margin-top: 30px; /* Espaciado superior para separación */
+}
