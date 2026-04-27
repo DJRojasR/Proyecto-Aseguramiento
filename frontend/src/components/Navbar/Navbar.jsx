@@ -1,87 +1,220 @@
-import React, { useContext, useState } from 'react'
-import "./Navbar.css"
-import { assets } from '../../assets/assets'
-import {Link, useNavigate} from 'react-router-dom'
+import { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { RiMenu3Line, RiCloseLine } from 'react-icons/ri'
+import { motion, AnimatePresence } from 'framer-motion'
 import { StoreContext } from '../../context/StoreContext'
+import { assets } from '../../assets/assets'
+import './Navbar.css'
 
-const Navbar = ({setShowLogin}) => {
+// Efecto "caída desde arriba" con delay escalonado
+const SlideDown = (delay = 0) => ({
+  initial:  { y: -40, opacity: 0 },
+  animate:  { y: 0,   opacity: 1, transition: { delay, duration: 0.5, ease: 'easeOut' } },
+  exit:     { y: -40, opacity: 0, transition: {        duration: 0.4, ease: 'easeIn'  } },
+})
 
-    const [menu, setMenu] = useState("menu"); 
+// Animación del menú móvil desplegable
+const mobileMenuVariants = {
+  hidden:  { opacity: 0, height: 0,      transition: { duration: 0.3, ease: 'easeIn'  } },
+  visible: { opacity: 1, height: 'auto', transition: { duration: 0.4, ease: 'easeOut' } },
+}
 
-    const {getTotalCartAmount,token,setToken} =useContext(StoreContext);
+const Navbar = ({ setShowLogin }) => {
 
-    const navigate = useNavigate();
+  const [menu, setMenu]         = useState('home')
+  const [menuOpen, setMenuOpen] = useState(false)
 
-    const Logout = () =>{
-        localStorage.removeItem("token");
-        setToken("");
-        navigate("/")
+  const { getTotalCartAmount, token, setToken } = useContext(StoreContext)
+  const navigate = useNavigate()
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    setToken('')
+    navigate('/')
+  }
+
+  const handleMenuClick = (section) => {
+    setMenu(section)
+    setMenuOpen(false)
+  }
+
+  const cartCount = getTotalCartAmount()
+
+  // Navega a la página principal y luego hace scroll al anchor indicado.
+  // Necesario porque href="#id" solo funciona si ya estás en "/".
+  // Si ya estamos en "/", scrollea directo; si no, navega primero y
+  // espera un tick para que el DOM esté listo antes de scrollear.
+  const navigateToSection = (sectionId, menuKey) => {
+    handleMenuClick(menuKey)
+    if (window.location.pathname !== '/') {
+      navigate('/')
+      // setTimeout da tiempo a React Router para renderizar la nueva ruta
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
     }
+  }
 
   return (
-    <div className='navbar'>
-        <Link to='/'><img src={assets.logo_juliaFish} alt='' className='logo'/></Link>
-        <ul className='navbar-menu'>
-            
-            <Link to='/' onClick={()=>setMenu("home")}
-            className={menu==="home"?"active":""}
-            >
-                inicio
+    <nav>
+      <div className="navbar">
+
+        {/* ── LOGO ── */}
+        <Link to="/">
+          <motion.img
+            src={assets.logo_juliaFish}
+            alt="JuliaFish logo"
+            className="logo"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            whileHover={{ scale: 1.05, opacity: 0.9 }}
+          />
+        </Link>
+
+        {/* ── MENÚ DESKTOP ── */}
+        <ul className="navbar-menu">
+          <motion.li variants={SlideDown(0.15)} initial="initial" animate="animate" exit="exit">
+            <Link to="/" className={menu === 'home' ? 'active' : ''} onClick={() => handleMenuClick('home')}>
+              Inicio
             </Link>
-
-            <a href='#explore-menu' onClick={()=>setMenu("menu")}
-            className={menu==="menu"?"active":""}
-            >
-                menu
-            </a>
-
-            <a href='#app-download' onClick={()=>setMenu("mobile-app")}
-            className={menu==="mobile-app"?"active":""}
-            >
-                app mobil
-            </a>
-
-            <a href='#footer' onClick={()=>setMenu("contact-us")}
-            className={menu==="contact-us"?"active":""}
-            >
-                contactanos
-            </a>
-
+          </motion.li>
+          <motion.li variants={SlideDown(0.25)} initial="initial" animate="animate" exit="exit">
+            {/* Botón en vez de <a href> para poder navegar a "/" primero si hace falta */}
+            <button className={`nav-anchor ${menu === 'menu' ? 'active' : ''}`} onClick={() => navigateToSection('explore-menu', 'menu')}>
+              Menú
+            </button>
+          </motion.li>
+          <motion.li variants={SlideDown(0.35)} initial="initial" animate="animate" exit="exit">
+            <button className={`nav-anchor ${menu === 'contact-us' ? 'active' : ''}`} onClick={() => navigateToSection('footer', 'contact-us')}>
+              Contáctanos
+            </button>
+          </motion.li>
+          <motion.li variants={SlideDown(0.45)} initial="initial" animate="animate" exit="exit">
+            <Link to="/Cart" className={`pedido-link ${menu === 'cart' ? 'active' : ''}`} onClick={() => handleMenuClick('cart')}>
+              Tu Pedido
+              {cartCount > 0 && <span className="pedido-badge">{cartCount}</span>}
+            </Link>
+          </motion.li>
         </ul>
 
-        {/* Creamos un div con la clase navbar-right */}
+        {/* ── MENÚ MÓVIL DESPLEGABLE ──
+            Incluye todos los links + "Iniciar sesión" o perfil al final
+            En móvil NO hay nada en navbar-right, todo está aquí */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.ul
+              className="navbar-menu-mobile"
+              variants={mobileMenuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <li>
+                <Link to="/" className={menu === 'home' ? 'active' : ''} onClick={() => handleMenuClick('home')}>
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <button className={`nav-anchor ${menu === 'menu' ? 'active' : ''}`} onClick={() => navigateToSection('explore-menu', 'menu')}>
+                  Menú
+                </button>
+              </li>
+              <li>
+                <button className={`nav-anchor ${menu === 'contact-us' ? 'active' : ''}`} onClick={() => navigateToSection('footer', 'contact-us')}>
+                  Contáctanos
+                </button>
+              </li>
+              <li>
+                <Link to="/Cart" className={`pedido-link-mobile ${menu === 'cart' ? 'active' : ''}`} onClick={() => handleMenuClick('cart')}>
+                  Tu Pedido {cartCount > 0 && <span className="pedido-badge">{cartCount}</span>}
+                </Link>
+              </li>
+
+              
+
+              {/* Sin sesión → "Iniciar sesión" como opción del menú */}
+              {!token ? (
+                <li>
+                  <button
+                    className="mobile-login-btn"
+                    onClick={() => { setShowLogin(true); setMenuOpen(false) }}
+                  >
+                    Iniciar sesión
+                  </button>
+                </li>
+              ) : (
+                /* Con sesión → opciones de perfil dentro del menú */
+                <>
+                  <li>
+                    <button onClick={() => { navigate('/myorders'); setMenuOpen(false) }}>
+                      Mis pedidos
+                    </button>
+                  </li>
+                  <li>
+                    <button onClick={logout}>
+                      Cerrar sesión
+                    </button>
+                  </li>
+                </>
+              )}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+
+        {/* ── LADO DERECHO ──
+            Desktop: botón de sesión / perfil
+            Móvil  : oculto completamente (CSS: display none)
+            Solo se muestra la hamburguesa en pantallas pequeñas */}
         <div className="navbar-right">
 
-        {/* Agregamos el icono de búsqueda y el icono de la cesta de compras */}
-        <img src={assets.search_icon} alt="" />
+          {/* Hamburguesa — visible solo en móvil (CSS) */}
+          <button
+            className="hamburger"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          >
+            {menuOpen ? <RiCloseLine size={26} /> : <RiMenu3Line size={26} />}
+          </button>
 
-        {/* Agregamos un div con la clase navbar-search-icon */}
-        <div className="navbar-search-icon">
+          {/* Botón / perfil — visible solo en desktop (CSS) */}
+          <motion.div
+            className="navbar-auth"
+            variants={SlideDown(0.5)}
+            initial="initial"
+            animate="animate"
+          >
+            {!token ? (
+              <motion.button
+                onClick={() => setShowLogin(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Iniciar sesión
+              </motion.button>
+            ) : (
+              <div className="navbar-profile">
+                <img src={assets.profile_icon} alt="Perfil" />
+                <ul className="nav-profile-dropdown">
+                  <motion.li whileHover={{ x: 4 }} onClick={() => navigate('/myorders')}>
+                    <img src={assets.bag_icon} alt="" />
+                    <p>Mis pedidos</p>
+                  </motion.li>
+                  <hr />
+                  <motion.li whileHover={{ x: 4 }} onClick={logout}>
+                    <img src={assets.logout_icon} alt="" />
+                    <p>Cerrar sesión</p>
+                  </motion.li>
+                </ul>
+              </div>
+            )}
+          </motion.div>
 
-          {/* Agregamos un icono de cesta de compras y un Link a la pagina de cesta de compras */}
-          <Link to="/Cart">
-              <img src={assets.basket_icon} alt="" />
-          </Link>
-
-          {/*y un div con la clase dot */}
-          <div className={getTotalCartAmount()===0?"":"dot"}></div>
         </div>
-        {/* Verificamos si el token existe y si no existe mostramos un boton con el texto sign in */}
-        {!token ? <button onClick={() => setShowLogin(true)}>Sign in</button> : 
-        // Si existe mostramos un div con la clase navbar-profile-agregamos un icono de perfil y un ul con la clase nav-profile-dropdown
-          <div className="navbar-profile">
-            <img src={assets.profile_icon} alt="Profile" />
-            <ul className="nav-profile-dropdown">
-              <li onClick={()=>navigate("/myorders")}><img src={assets.bag_icon} alt="Orders" /><p>Orders</p></li>
-              <hr />
-              <li onClick={Logout}><img src={assets.logout_icon} alt="Logout" /><p>Logout</p></li>
-            </ul>
-          </div>
-        }
-          {/* Agregamos un botón con el texto sign in(lo traduce automaticamente a inciar seccion xdxdxd) */}
-          
-     </div>
-    </div>
+      </div>
+    </nav>
   )
 }
 

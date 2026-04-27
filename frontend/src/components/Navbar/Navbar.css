@@ -1,131 +1,222 @@
-/* Estilos para la barra de navegación */
+/* =========================================
+   NAVBAR PRINCIPAL
+   ========================================= */
+
 .navbar {
-    padding: 20px 0px; /* Espaciado arriba y abajo */
-    display: flex; /* Usa flexbox para alinear elementos */
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-    align-self: center; /* Centra la barra de navegación */
-  }
-  
-  .navbar .logo {
-    width: 100px; /* Ancho del logo */
-  }
-  
-  .navbar .navbar-menu {
-    display: flex; /* Usa flexbox para alinear elementos */
-    list-style: none; /* Quita los puntos de la lista */
-    gap: 20px; /* Espaciado entre elementos */
-    color: #2aa0cf; /* Color de los elementos */
-    font-size: 18px; /* Tamaño de la fuente */
-    justify-content: space-around; /* O usa space-between si prefieres */
-    align-items: center;
-  }
-  
-  .navbar-right {
-    display: flex; /* Usa flexbox para alinear elementos */
-    align-items: center; /* Alinea los elementos verticalmente */
-    gap: 40px; /* Espaciado entre elementos */
-  }
-  
-  .navbar button {
-    background: transparent;
-    padding: 10px 20px; /* Espaciado arriba y abajo */
-    border: 1px solid #ffffff; /* Borde del botón */
-    color: #2aa0cf; /* Color del texto */
-    font-size: 16px; /* Tamaño de la fuente */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    border-radius: 50px; /* Borde redondeado */
-    transition: all 0.5s; /* Transición al pasar por encima */
-  }
-  
-  .navbar button:hover {
-    background:  #2aa0cf; /* Color de fondo al pasar por encima */
-    color: white; /* Color del texto al pasar por encima */
-  }
-  
-  /*la linea marroncita al raz de cada seccion de la barra de naveagcion*/
-  .navbar .active {
-    padding-bottom: 2 px;
-    border-bottom: 3px solid;
-  }
-  /*para que el cursos sea una manito y no una flecha jejeje*/
-  .navbar li {
-    cursor: pointer;
-  }
-  .navbar-search-icon {
-    position: relative;
-  }
-  
-  /*para laconfiguracion del icono de pedidos*/
-  .navbar-search-icon .dot {
-    position: absolute;
-    min-width: 10px;
-    min-height: 10px;
-    background-color: rgb(32, 107, 220);
-    border-radius: 5px;
-    top: -8px;
-    right: -8px;
-  }
-@media (max-width:1050px) {
-  .navbar .logo{
-    width: 140px;
-  }
-  .navbar-menu{
-    gap: 20px;
-    font-size: 17px;
-  }
-  .navbar-right{
-    gap: 30px;
-  }
-  .navbar-right img{
-    width: 22px;
-  }
-  .navbar-right button{
-    padding: 8px 25px;
-  }
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
-.navbar-profile{
-  position: relative; /* Posición relativa */
+/* =========================================
+   LOGO
+   ========================================= */
+
+.navbar .logo {
+  width: 100px;
 }
 
-.nav-profile {
-  position: relative; /* Permite que el dropdown se posicione de forma absoluta */
+/* =========================================
+   MENÚ DESKTOP
+   ========================================= */
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu a,
+.navbar-menu .pedido-link {
+  text-decoration: none;
+  color: #2aa0cf;
+  font-size: 18px;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+/* Botones que actúan como links de ancla (Menú, Contáctanos) */
+.navbar-menu .nav-anchor {
+  background: transparent;
+  border: none;
+  padding: 0;
+  padding-bottom: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: inherit;
+  color: #2aa0cf;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar-menu .nav-anchor::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2aa0cf;
+  transition: width 0.3s ease;
+}
+
+.navbar-menu .nav-anchor:hover::after {
+  width: 100%;
+}
+
+.navbar-menu .nav-anchor.active::after {
+  width: 100%;
+}
+
+.navbar-menu .pedido-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2aa0cf;
+  transition: width 0.3s ease;
+}
+
+.navbar-menu a:hover::after,
+.navbar-menu .pedido-link:hover::after {
+  width: 100%;
+}
+
+.navbar-menu a.active::after,
+.navbar-menu .pedido-link.active::after {
+  width: 100%;
+}
+
+/* ── 3. Agrega ::after también a los <a> normales ── */
+.navbar-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2aa0cf;
+  transition: width 0.3s ease;
+}
+
+/* =========================================
+   "TU PEDIDO" con badge
+   ========================================= */
+
+.pedido-link,
+.pedido-link-mobile {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  gap: 6px;
 }
 
-/* Estilos del menú desplegable */
+.pedido-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background-color: #2aa0cf;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%       { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* =========================================
+   LADO DERECHO
+   ========================================= */
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* =========================================
+   HAMBURGUESA — oculta en desktop
+   ========================================= */
+
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #2aa0cf;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 200;
+}
+
+/* =========================================
+   BOTÓN "INICIAR SESIÓN" (desktop)
+   ========================================= */
+
+.navbar-auth button {
+  background: transparent;
+  padding: 10px 20px;
+  border: 1px solid #2aa0cf;
+  color: #2aa0cf;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background 0.4s ease, color 0.4s ease;
+  white-space: nowrap;
+}
+
+.navbar-auth button:hover {
+  background: #2aa0cf;
+  color: white;
+}
+
+/* =========================================
+   PERFIL + DROPDOWN (desktop)
+   ========================================= */
+
+.navbar-profile {
+  position: relative;
+}
+
 .nav-profile-dropdown {
   position: absolute;
   right: 0;
-  top: 90%; /* Evita que el menú toque el perfil */
+  top: 90%;
   display: flex;
   flex-direction: column;
-  background-color: #2aa0cf; /* Azul con ligera transparencia */
+  background-color: #2aa0cf;
   padding: 12px 20px;
   border-radius: 10px;
   border: 1px solid #ecf1f7;
   outline: 2px solid white;
   list-style: none;
-  z-index: 1000; /* Asegura que quede encima de otros elementos */
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-  
-  /* Efecto inicial oculto */
-  opacity: 0;/* Opacidad inicial */
-  transform: translateY(-10px);/* Desplazamiento hacia arriba */
-  transition: opacity 0.5s ease-in-out, transform 1s ease-in-out;/* Transición suave */
-  pointer-events: none; /* Evita que el menú sea clickeable cuando está oculto */
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Mostrar el menú al hacer hover */
 .navbar-profile:hover .nav-profile-dropdown {
   opacity: 1;
   transform: translateY(0);
-  pointer-events: auto; /* Permite la interacción */
+  pointer-events: auto;
 }
 
-/* Estilo de los elementos dentro del menú */
 .nav-profile-dropdown li {
   display: flex;
   align-items: center;
@@ -135,16 +226,15 @@
   padding: 8px 10px;
   cursor: pointer;
   border-radius: 6px;
-  transition: background 1s ease-in-out;
+  transition: background 0.2s ease;
 }
 
 .nav-profile-dropdown li:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Flecha indicadora */
 .nav-profile-dropdown::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -8px;
   right: 5px;
@@ -153,27 +243,123 @@
   border-color: transparent transparent rgba(87, 201, 233, 0.95) transparent;
 }
 
-@media (max-width:900px) {
-  .navbar .logo{
-    width: 120px;
-  }
-  .navbar-menu{
-    gap: 15px;
-    font-size: 16px;
-  }
-  .navbar-right{
-    gap: 20px;
-  }
-  .navbar-right img{
-    width: 20px;
-  }
-  .navbar-right button{
-    padding: 7px 20px;
-    font-size: 15px;
-  }
+/* =========================================
+   MENÚ MÓVIL DESPLEGABLE
+   ========================================= */
+
+.navbar-menu-mobile {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  list-style: none;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 8px 20px rgba(42, 160, 207, 0.12);
 }
-@media (max-width:750px) {
-  .navbar-menu{
-    display: none;
-  }
+
+.navbar-menu-mobile li {
+  border-top: 1px solid #e8f6fb;
+  display: block;               /* fix: necesario para que width:100% funcione en buttons */
+}
+
+/* Links y botones del menú móvil */
+.navbar-menu-mobile a,
+.navbar-menu-mobile button,
+.navbar-menu-mobile .pedido-link-mobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  color: #2aa0cf;
+  font-size: 16px;
+  font-family: inherit;         /* fix: buttons no heredan font-family por defecto */
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: left;             /* fix: buttons centran por defecto */
+  transition: background 0.2s ease;
+}
+
+.navbar-menu-mobile a:hover,
+.navbar-menu-mobile button:hover,
+.navbar-menu-mobile .pedido-link-mobile:hover {
+  background: #f0faff;
+}
+
+/* ─── ESTADO ACTIVO en móvil: fondo azul + texto blanco ─── */
+/* (en desktop usa border-bottom; en móvil, menú vertical, usamos color) */
+
+.navbar-menu-mobile a.active,
+.navbar-menu-mobile .nav-anchor.active,
+.navbar-menu-mobile .pedido-link-mobile.active {
+  background-color: #2aa0cf;
+  color: white;
+  border-bottom: none;
+}
+
+/* El badge se invierte cuando el item está activo */
+.navbar-menu-mobile .pedido-link-mobile.active .pedido-badge {
+  background-color: white;
+  color: #2aa0cf;
+}
+
+/* ─── nav-anchor dentro del menú móvil ─── */
+.navbar-menu-mobile .nav-anchor {
+  font-size: 16px;
+  padding: 14px 20px;
+  width: 100%;
+  text-align: left;
+}
+
+/* Botón de login con estilo destacado dentro del menú móvil */
+.mobile-login-btn {
+  font-weight: 600 !important;
+  color: #2aa0cf !important;
+  border: none !important;
+}
+
+/* =========================================
+   RESPONSIVE — TABLET (≤1050px)
+   ========================================= */
+
+@media (max-width: 1050px) {
+  .navbar .logo        { width: 120px; }
+  .navbar-menu         { gap: 30px; font-size: 17px; }
+  .navbar-auth button  { padding: 8px 20px; }
+}
+
+@media (max-width: 900px) {
+  .navbar .logo        { width: 100px; }
+  .navbar-menu         { gap: 22px; font-size: 16px; }
+  .navbar-auth button  { padding: 7px 16px; font-size: 15px; }
+}
+
+/* =========================================
+   RESPONSIVE — MÓVIL (≤750px)
+   Solo se ve: logo | hamburguesa
+   Todo lo demás va dentro del menú
+   ========================================= */
+
+@media (max-width: 750px) {
+  /* Menú de links desktop: oculto */
+  .navbar-menu        { display: none; }
+
+  /* Hamburguesa: visible */
+  .hamburger          { display: block; }
+
+  /* Botón/perfil de desktop: oculto */
+  .navbar-auth        { display: none; }
+
+  /* El menú móvil pasa a flex para que framer-motion lo anime */
+  .navbar-menu-mobile { display: flex; }
 }
