@@ -19,7 +19,7 @@ import orderRouter from "./routes/orderRoute.js";
 // Creamos una instancia de la aplicación Express
 const app = express();
 // Definimos el puerto en el que correrá el servidor
-const port = 4000;
+const port = process.env.PORT;
 
 // Middleware para habilitar el uso de JSON en las solicitudes
 app.use(express.json());
