@@ -25,8 +25,8 @@ const MyOrders = () => {
     <div className='my-orders'>
         <h2>Mis ordenes</h2>
         <div className="container">
-            {data.map((order, index)=>(
-                <div key ={index} className="my-orders-order">
+            {data.map((order)=>(
+                <div key={order._id} className="my-orders-order">
                     <img src={assets.parcel_icon} alt="" />
                     <p>{order.items.map((item,index)=>{
                         if(index === order.items.length-1){

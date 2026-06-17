@@ -126,7 +126,7 @@
   height: 18px;
   padding: 0 4px;
   background-color: #2aa0cf;
-  color: white;
+  color: #ffffff; /* ✅ Blanco puro, contraste suficiente */
   font-size: 11px;
   font-weight: 600;
   border-radius: 9px;
@@ -180,7 +180,7 @@
 
 .navbar-auth button:hover {
   background: #2aa0cf;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 /* =========================================
@@ -303,14 +303,14 @@
 .navbar-menu-mobile .nav-anchor.active,
 .navbar-menu-mobile .pedido-link-mobile.active {
   background-color: #2aa0cf;
-  color: white;
+  color: #ffffff;
   border-bottom: none;
 }
 
 /* El badge se invierte cuando el item está activo */
 .navbar-menu-mobile .pedido-link-mobile.active .pedido-badge {
   background-color: white;
-  color: #2aa0cf;
+  color: #0b6e91;
 }
 
 /* ─── nav-anchor dentro del menú móvil ─── */

@@ -2,7 +2,7 @@
 
 .food-item {
   width: 100%;/*ancho del item*/
-  margin: auto; /*centrar*/
+  margin-bottom: 50px;
   border-radius: 15px;/*bordes redondeados*/
   box-shadow: 0px 0px 10px #000015;/*sombra*/
   transition: 0.3s;/*transicion*/
@@ -63,7 +63,9 @@
 .food-item-counter img{
   width: 30px;
 }
-
-.food-item {
-  margin-bottom: 50px; /* se agrego este margen para separar los items de comida */
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }

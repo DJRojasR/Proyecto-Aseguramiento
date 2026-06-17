@@ -11,7 +11,6 @@ const Header = () => {
           del océano. Ordena tu platillo favorito en solo unos pasos y déjate
           sorprender por nuestra deliciosa selección de mariscos y pescados.
         </p>
-        <button>¡Ordena ahora!</button>
       </div>
     </div>
   );

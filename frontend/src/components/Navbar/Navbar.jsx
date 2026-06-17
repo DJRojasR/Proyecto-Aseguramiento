@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react'
+import PropTypes from 'prop-types'
 import { Link, useNavigate } from 'react-router-dom'
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -46,14 +47,14 @@ const Navbar = ({ setShowLogin }) => {
   // espera un tick para que el DOM esté listo antes de scrollear.
   const navigateToSection = (sectionId, menuKey) => {
     handleMenuClick(menuKey)
-    if (window.location.pathname !== '/') {
+    if (globalThis.location.pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
       navigate('/')
       // setTimeout da tiempo a React Router para renderizar la nueva ruta
       setTimeout(() => {
         document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
-    } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -102,7 +103,7 @@ const Navbar = ({ setShowLogin }) => {
 
         {/* ── MENÚ MÓVIL DESPLEGABLE ──
             Incluye todos los links + "Iniciar sesión" o perfil al final
-            En móvil NO hay nada en navbar-right, todo está aquí */}
+            En móvil NO hay nada en navbar-right*/}
         <AnimatePresence>
           {menuOpen && (
             <motion.ul
@@ -133,20 +134,8 @@ const Navbar = ({ setShowLogin }) => {
                 </Link>
               </li>
 
-              
-
-              {/* Sin sesión → "Iniciar sesión" como opción del menú */}
-              {!token ? (
-                <li>
-                  <button
-                    className="mobile-login-btn"
-                    onClick={() => { setShowLogin(true); setMenuOpen(false) }}
-                  >
-                    Iniciar sesión
-                  </button>
-                </li>
-              ) : (
-                /* Con sesión → opciones de perfil dentro del menú */
+              {/* Con sesión → opciones de perfil dentro del menú; sin sesión → "Iniciar sesión" */}
+              {token ? (
                 <>
                   <li>
                     <button onClick={() => { navigate('/myorders'); setMenuOpen(false) }}>
@@ -159,6 +148,15 @@ const Navbar = ({ setShowLogin }) => {
                     </button>
                   </li>
                 </>
+              ) : (
+                <li>
+                  <button
+                    className="mobile-login-btn"
+                    onClick={() => { setShowLogin(true); setMenuOpen(false) }}
+                  >
+                    Iniciar sesión
+                  </button>
+                </li>
               )}
             </motion.ul>
           )}
@@ -186,15 +184,7 @@ const Navbar = ({ setShowLogin }) => {
             initial="initial"
             animate="animate"
           >
-            {!token ? (
-              <motion.button
-                onClick={() => setShowLogin(true)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.96 }}
-              >
-                Iniciar sesión
-              </motion.button>
-            ) : (
+            {token ? (
               <div className="navbar-profile">
                 <img src={assets.profile_icon} alt="Perfil" />
                 <ul className="nav-profile-dropdown">
@@ -209,6 +199,14 @@ const Navbar = ({ setShowLogin }) => {
                   </motion.li>
                 </ul>
               </div>
+            ) : (
+              <motion.button
+                onClick={() => setShowLogin(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Iniciar sesión
+              </motion.button>
             )}
           </motion.div>
 
@@ -216,6 +214,10 @@ const Navbar = ({ setShowLogin }) => {
       </div>
     </nav>
   )
+}
+
+Navbar.propTypes = {
+  setShowLogin: PropTypes.func.isRequired,
 }
 
 export default Navbar

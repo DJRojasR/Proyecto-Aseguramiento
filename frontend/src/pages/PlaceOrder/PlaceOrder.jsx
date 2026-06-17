@@ -46,7 +46,7 @@ const PlaceOrder = () => {
     let response = await axios.post(url+"/api/order/place", orderData, {headers:{token}}) 
     if(response.data.success){
       const {session_url} = response.data;
-      window.location.replace(session_url);
+      globalThis.location.replace(session_url);
     }
     else{
       alert("Error al procesar el pago.")
@@ -56,10 +56,7 @@ const PlaceOrder = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    if(!token){
-      navigate("/cart")
-    }
-    else if(getTotalCartAmount === 0){
+    if(!token || getTotalCartAmount() === 0){
       navigate("/cart")
     }
   },[token])
