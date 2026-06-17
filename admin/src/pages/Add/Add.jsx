@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
+import PropTypes from "prop-types";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -134,6 +135,10 @@ console.log("Respuesta del servidor:", response.data);
       </form>
     </div>
   );
+};
+
+Add.propTypes = {
+  url: PropTypes.string.isRequired,
 };
 
 export default Add;

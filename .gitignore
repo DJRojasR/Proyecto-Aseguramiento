@@ -28,4 +28,7 @@ dist-ssr
 *.sw?
 
 *.properties
-*.scannerwork/
+# SonarQube
+.scannerwork/
+.sonar_lock
+report-task.txt
