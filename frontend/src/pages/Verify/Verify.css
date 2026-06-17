@@ -3,7 +3,7 @@
 	display: grid;
 
 }
-verify .spinner{
+.verify .spinner{
 	width: 100px;
 	height: 100px;
 	place-self: center;

@@ -7,7 +7,7 @@ import axios from 'axios'
 const Verify = () => {
 
     //Parametros de la url unica respecto a una orden realizada
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const success = searchParams.get("success");
     const orderId = searchParams.get("orderId");
     const {url} = useContext(StoreContext)
