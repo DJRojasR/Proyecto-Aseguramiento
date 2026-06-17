@@ -21,5 +21,8 @@
     "nodemon": "^3.1.10",
     "stripe": "^18.1.1",
     "validator": "^13.15.0"
+  },
+  "devDependencies": {
+    "@sonar/scan": "^4.3.6"
   }
 }
