@@ -25,8 +25,23 @@ const port = process.env.PORT;
 
 // Middleware para habilitar el uso de JSON en las solicitudes
 app.use(express.json());
-// Middleware para permitir solicitudes desde otros dominios (CORS)
-app.use(cors());
+
+// Configuración segura de CORS
+const allowedOrigins = new Set(process.env.ALLOWED_ORIGINS.split(','));
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 //db coneccion
 connectDB();

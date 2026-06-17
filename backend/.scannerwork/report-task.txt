@@ -1,6 +1,13 @@
 projectKey=JuliaFish
 serverUrl=http://localhost:9000
+<<<<<<< HEAD
 serverVersion=26.3.0.120487
 dashboardUrl=http://localhost:9000/dashboard?id=JuliaFish
 ceTaskId=3eb14efc-bc7b-49d0-aea0-7ad5d93f8bca
 ceTaskUrl=http://localhost:9000/api/ce/task?id=3eb14efc-bc7b-49d0-aea0-7ad5d93f8bca
+=======
+serverVersion=26.6.0.123539
+dashboardUrl=http://localhost:9000/dashboard?id=backend
+ceTaskId=947eeced-4cb6-40b2-b65b-9ae80a647907
+ceTaskUrl=http://localhost:9000/api/ce/task?id=947eeced-4cb6-40b2-b65b-9ae80a647907
+>>>>>>> 68f311f82dc3b85582c9d2de233bf91d25c97385
