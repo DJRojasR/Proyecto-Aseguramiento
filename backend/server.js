@@ -18,6 +18,8 @@ import orderRouter from "./routes/orderRoute.js";
 
 // Creamos una instancia de la aplicación Express
 const app = express();
+// Deshabilitamos el encabezado X-Powered-By para no revelar la versión de Express
+app.disable('x-powered-by');
 // Definimos el puerto en el que correrá el servidor
 const port = process.env.PORT;
 
