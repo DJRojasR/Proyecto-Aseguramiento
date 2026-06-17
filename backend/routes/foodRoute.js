@@ -14,16 +14,15 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage });
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 } // Límite de 5 MB
+});
 
 
 // creamos un objeto de almacenamiento con multer
 foodRoute.post('/addfood', upload.single("image"),addFood);
 foodRoute.get("/list",listFood)
 foodRoute.post("/remove",removeFood);
-
-
-
-
 
 export default foodRoute;
