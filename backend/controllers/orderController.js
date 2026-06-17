@@ -16,11 +16,10 @@ const placeOrder = async (req, res) => {
            address: req.body.address,
        })
        
-       // console.log(newOrder);
-       await newOrder.save(); {/*guardamos la orden en la base de datos*/}
+       await newOrder.save();
        const orders = await orderModel.find({});
        console.log("Órdenes después de insertar:", orders);
-       await userModel.findByIdAndUpdate(req.body.userId, {cartData:{}});{/*borramos los items del carrito del usuario*/}
+       await userModel.findByIdAndUpdate(req.body.userId, {cartData:{}});
        const line_items = req.body.items.map((item)=>({
               price_data:{
                 //Moneda en la que se va a pagar
@@ -43,8 +42,6 @@ const placeOrder = async (req, res) => {
              },
              quantity: 1,
          })
-         {/*creamos la sesion de pago con stripe
-         y le pasamos los items de la orden*/}
          const session = await stripe.checkout.sessions.create({
             line_items:line_items,
             mode:'payment',
