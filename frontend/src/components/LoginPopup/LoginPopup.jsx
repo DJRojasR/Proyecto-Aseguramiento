@@ -18,13 +18,15 @@ const LoginPopup = ({ setShowLogin }) => {
   };
 
   const onLogin = async (event) => {
-    event.preventDefault();
-    let newUrl = url;
-    if (currState === "Login") {
-      newUrl += "/api/user/login";
-    } else {
-      newUrl += "/api/user/register";
-    }
+  event.preventDefault();
+  let newUrl = url;
+  if (currState === "Login") {
+    newUrl += "/api/user/login";
+  } else {
+    newUrl += "/api/user/register";
+  }
+
+  try {
     const response = await axios.post(newUrl, data);
     if (response.data.success) {
       setToken(response.data.token);
@@ -34,7 +36,15 @@ const LoginPopup = ({ setShowLogin }) => {
     } else {
       alert(response.data.message);
     }
-  };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      alert("No se puede conectar al servidor. ¿Está corriendo el backend?");
+    } else {
+      alert("Error: " + (error.response?.data?.message || error.message));
+    }
+    console.error("Error en login:", error);
+  }
+};
 
   return (
     <div className='login-popup'>

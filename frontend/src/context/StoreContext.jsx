@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useMemo } from "react";
+import { createContext, useEffect, useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -7,14 +7,12 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = ({ children }) => {
 
   const [cartItems, setCartItems] = useState({});
-  const url = "http://localhost:4000";
   const [token, setToken] = useState("");
   const [foodList, setFoodList] = useState([]);
 
+  const url = "http://localhost:4000";
 
-  /*Se agrega un usseEffect, esto nos asegura que cada nuevo producto tenga un valor inicial
-  en cartItems (incluso si agregaste categorías nuevas)*/
-
+  // ─── Inicializa el carrito cuando carga la lista de comida ───
   useEffect(() => {
     if (foodList.length > 0 && Object.keys(cartItems).length === 0) {
       const initialCart = {};
@@ -23,59 +21,96 @@ const StoreContextProvider = ({ children }) => {
       });
       setCartItems(initialCart);
     }
-  }, [foodList]);
+  }, [foodList]); // eslint-disable-line react-hooks/exhaustive-deps
 
-
-  const addToCart = async (itemId) => {
-    if (cartItems[itemId]) {
-      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    } else {
-      setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-    }
-    if (token) {
-      await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
-    }
-  };
-
-  const removeFromCart = async (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if (token) {
-      await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
-    }
-  };
-
-  const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item in cartItems) {
-      if (cartItems[item] > 0) {
-        const itemInfo = foodList.find((product) => product._id === item);
-        totalAmount += itemInfo.price * cartItems[item];
-      }
-    }
-    return totalAmount;
-  };
-
-  const fetchFoodList = async () => {
-    const response = await axios.get(url + "/api/food/list");
-    setFoodList(response.data.data);
-  };
-
-  const loadCartData = async (token) => {
-    const response = await axios.post(url + "/api/cart/get", {}, { headers: { token } });
-    setCartItems(response.data.cartData);
-  };
-
+  // ─── Cargar datos al iniciar ───
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
-      if (localStorage.getItem("token")) {
-        setToken(localStorage.getItem("token"));
-        await loadCartData(localStorage.getItem("token"));
+      const savedToken = localStorage.getItem("token");
+      if (savedToken) {
+        setToken(savedToken);
+        await loadCartData(savedToken);
       }
     }
     loadData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ─── Fetch lista de comida ───
+  const fetchFoodList = useCallback(async () => {
+    try {
+      const response = await axios.get(url + "/api/food/list");
+      setFoodList(response.data.data);
+    } catch (error) {
+      console.error("Error cargando productos:", error.message);
+    }
   }, []);
 
+  // ─── Cargar carrito desde el servidor ───
+  const loadCartData = useCallback(async (tkn) => {
+  try {
+    const response = await axios.post(
+      url + "/api/cart/get",
+      {},
+      { headers: { token: tkn } }
+    );
+    // ✅ Verifica que cartData exista antes de setearlo
+    if (response.data.cartData) {
+      setCartItems(response.data.cartData);
+    }
+  } catch (error) {
+    // ✅ No rompe la app — el carrito simplemente queda vacío
+    console.warn("Carrito vacío o no encontrado:", error.message);
+  }
+}, []);
+
+  // ─── Agregar al carrito ───
+  const addToCart = useCallback(async (itemId) => {
+    setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 0) + 1 }));
+    if (token) {
+      try {
+        await axios.post(
+          url + "/api/cart/add",
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (error) {
+        console.error("Error agregando al carrito:", error.message);
+      }
+    }
+  }, [token]);
+
+  // ─── Remover del carrito ───
+  const removeFromCart = useCallback(async (itemId) => {
+    setCartItems((prev) => ({ ...prev, [itemId]: Math.max((prev[itemId] || 0) - 1, 0) }));
+    if (token) {
+      try {
+        await axios.post(
+          url + "/api/cart/remove",
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (error) {
+        console.error("Error removiendo del carrito:", error.message);
+      }
+    }
+  }, [token]);
+
+  // ─── Total del carrito ───
+  const getTotalCartAmount = useCallback(() => {
+    let totalAmount = 0;
+    for (const itemId in cartItems) {
+      if (cartItems[itemId] > 0) {
+        const itemInfo = foodList.find((product) => product._id === itemId);
+        if (itemInfo) {
+          totalAmount += itemInfo.price * cartItems[itemId];
+        }
+      }
+    }
+    return totalAmount;
+  }, [cartItems, foodList]);
+
+  // ─── Contexto memorizado ───
   const contextValue = useMemo(() => ({
     food_list: foodList,
     cartItems,
@@ -87,7 +122,7 @@ const StoreContextProvider = ({ children }) => {
     token,
     setToken,
     loadCartData,
-  }), [foodList, cartItems, token]);
+  }), [foodList, cartItems, token, addToCart, removeFromCart, getTotalCartAmount, loadCartData]);
 
   return (
     <StoreContext.Provider value={contextValue}>

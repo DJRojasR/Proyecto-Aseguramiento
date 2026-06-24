@@ -32,7 +32,7 @@ const allowedOrigins = new Set(process.env.ALLOWED_ORIGINS.split(','));
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.has(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Origen no permitido por CORS'));
