@@ -17,24 +17,40 @@ const LoginPopup = ({ setShowLogin }) => {
     setData(data => ({ ...data, [name]: value }));
   };
 
-  const onLogin = async (event) => {
-    event.preventDefault();
-    let newUrl = url;
-    if (currState === "Login") {
-      newUrl += "/api/user/login";
-    } else {
-      newUrl += "/api/user/register";
-    }
+const onLogin = async (event) => {
+  event.preventDefault();
+  let newUrl = url;
+  if (currState === "Login") {
+    newUrl += "/api/user/login";
+  } else {
+    newUrl += "/api/user/register";
+  }
+
+  try {
     const response = await axios.post(newUrl, data);
     if (response.data.success) {
       setToken(response.data.token);
       localStorage.setItem("token", response.data.token);
+
+      // ✅ Si es admin, redirige al panel admin
+      if (response.data.role === 'admin') {
+        window.location.href = "http://localhost:5174/";
+        return;
+      }
+
       await loadCartData(response.data.token);
       setShowLogin(false);
     } else {
       alert(response.data.message);
     }
-  };
+  } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      alert("No se puede conectar al servidor.");
+    } else {
+      alert("Error: " + (error.response?.data?.message || error.message));
+    }
+  }
+};
 
   return (
     <div className='login-popup'>
