@@ -3,80 +3,65 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
-// login user
+
+// Cambia createToken para incluir el rol
+const createToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
+
+// En loginUser — devuelve también el rol
 const loginUser = async (req, res) => {
-	const { email, password } = req.body;
-	try {
-		// revisando si el usuario ya existe
-		const user = await userModel.findOne({ email });
-		//si no existe el usuario
-		if (!user) {
-			return res.json({ success: false, message: "Credenciales inválidas" });
-		}
-		// comparando contraseñas
-		const match = await bcrypt.compare(password, user.password);
-		//si no coinciden las contraseñas
-		if (!match) {
-			return res.json({ success: false, message: "Credenciales inválidas" });
-		}
-		//creamos el token
-		const token = createToken(user._id);
-		res.json({ success: true, token });
-	} catch (error) {
-		console.log("Error en loginUser:", error); // 👀 Ver error detallado
-		res.json({ success: false, message: error.message }); // 👀 Enviar error real
-	}
+  const { email, password } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "Credenciales inválidas" });
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.json({ success: false, message: "Credenciales inválidas" });
+    }
+    // ✅ Token incluye el rol
+    const token = createToken(user._id, user.role);
+    // ✅ Devuelve el rol al frontend
+    res.json({ success: true, token, role: user.role });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
 };
 
-const createToken = (id) => {
-    console.log("JWT_SECRET:", process.env.JWT_SECRET); // 👀 Ver si tiene valor
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
-};
-
-
-
-// Registrar usuarios
+// En registerUser — los usuarios nuevos siempre son 'customer'
 const registerUser = async (req, res) => {
-	const { name, email, password } = req.body;
-	try {
-		//revisando si el usuario ya existe
-		const exists=await userModel.findOne({email});
-		if(exists){
-			return res.json({success:false,message:"Usuario ya existe"});
-		}
-		
-		// validando email y contraseña fuerte
-		if(!validator.isEmail(email)){
-			return res.json({success:false,message:"Por favor ingresar un email válido"});
-		}
-		if(password.length<8){
-			return res.json({success:false,message:"La contraseña debe tener al menos 8 caracteres"});
-		}
-		// encriptando la contraseña hacemos useo de exceptiones para manejar errores
-		
-			const salt = await bcrypt.genSalt(10);
-			const hashedPassword = await bcrypt.hash(password, salt);
-		
-		
+  const { name, email, password } = req.body;
+  try {
+    const exists = await userModel.findOne({ email });
+    if (exists) {
+      return res.json({ success: false, message: "Usuario ya existe" });
+    }
+    if (!validator.isEmail(email)) {
+      return res.json({ success: false, message: "Por favor ingresar un email válido" });
+    }
+    if (password.length < 8) {
+      return res.json({ success: false, message: "La contraseña debe tener al menos 8 caracteres" });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-		const newUser = new userModel({
-			
-			name: name,
-			email: email,
-			password: hashedPassword, 
-		
-		});
+    const newUser = new userModel({
+      name,
+      email,
+      password: hashedPassword,
+      role: 'customer' // ✅ Siempre customer al registrarse
+    });
 
-		const user=await newUser.save();
-		const token=createToken(user._id)
-		res.json({success:true,token});
-
-	} catch (error) {
-		console.log("Error en registerUser:", error); // 👀 Ver error detallado
-		res.json({ success: false, message: error.message }); // 👀 Enviar error real
-	}
-	
+    const user = await newUser.save();
+    const token = createToken(user._id, user.role);
+    res.json({ success: true, token, role: user.role });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
 };
+
 
 const userlist = async (req, res)=>{
 	try{

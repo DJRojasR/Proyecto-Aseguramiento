@@ -1,21 +1,17 @@
 import jwt from "jsonwebtoken";
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   const { token } = req.headers;
   if (!token) {
-    return res.json({ success: false, message: "Not Authorized Login Again" });
+    return res.json({ success: false, message: "No autorizado, inicia sesión" });
   }
-
   try {
-    const token_decode = jwt.verify(token, process.env.JWT_SECRET);
-	req.body.userId = token_decode.id;
-	next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.body.userId = decoded.id;
+    req.body.role   = decoded.role; // ✅ Disponible en los controladores
+    next();
   } catch (error) {
-	console.log(error);
-	res.json({
-	  success: false,
-	  message: "Error",
-	});
+    res.json({ success: false, message: "Token inválido" });
   }
 };
 
