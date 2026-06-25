@@ -8,7 +8,7 @@ const List = ({ url }) => {
   const [list, setList] = useState([]);
 
   const fetchList = useCallback(async () => {
-    const response = await axios.get(`${url}/api/food/list`);
+    const response = await axios.get(`${url}/api/food/list-admin`);
     if (response.data.success) {
       setList(response.data.data);
     } else {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { addFood, listFood, removeFood, toggleAvailability } from '../controllers/foodController.js';
+import { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability } from '../controllers/foodController.js';
 import multer from 'multer';
 
 const foodRoute = express.Router();
@@ -20,6 +20,7 @@ const upload = multer({
 
 foodRoute.post('/addfood',  upload.single("image"), addFood);
 foodRoute.get('/list',      listFood);
+foodRoute.get('/list-admin', listFoodAdmin);
 foodRoute.post('/remove',   removeFood);
 foodRoute.post('/toggle',   toggleAvailability); // ✅ Nueva ruta
 

@@ -21,7 +21,7 @@ const addFood = async (req, res) => {
 
 const listFood = async (req, res) => {
   try {
-    const foods = await foodModel.find({});
+    const foods = await foodModel.find({available: true });
     res.json({ success: true, data: foods });
   } catch (error) {
     console.log(error);
@@ -44,7 +44,7 @@ const removeFood = async (req, res) => {
   }
 };
 
-// ✅ Nuevo: activa o desactiva disponibilidad
+// Nuevo: activa o desactiva disponibilidad
 const toggleAvailability = async (req, res) => {
   try {
     const food = await foodModel.findById(req.body.id);
@@ -63,4 +63,14 @@ const toggleAvailability = async (req, res) => {
   }
 };
 
-export { addFood, listFood, removeFood, toggleAvailability };
+// Solo para el admin — sin filtro
+const listFoodAdmin = async (req, res) => {
+  try {
+    const foods = await foodModel.find({});
+    res.json({ success: true, data: foods });
+  } catch (error) {
+    res.json({ success: false, message: "error" });
+  }
+};
+
+export { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability };

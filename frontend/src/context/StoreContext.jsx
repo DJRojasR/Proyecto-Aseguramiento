@@ -40,7 +40,19 @@ const StoreContextProvider = ({ children }) => {
   const fetchFoodList = useCallback(async () => {
     try {
       const response = await axios.get(url + "/api/food/list");
-      setFoodList(response.data.data);
+      const availableItems = response.data.data;
+      setFoodList(availableItems);
+
+      // ✅ Limpia del carrito items que ya no están disponibles
+      const availableIds = new Set(availableItems.map(f => f._id));
+      setCartItems(prev => {
+        const cleaned = {};
+        for (const id in prev) {
+          if (availableIds.has(id)) cleaned[id] = prev[id];
+        }
+        return cleaned;
+      });
+
     } catch (error) {
       console.error("Error cargando productos:", error.message);
     }
@@ -48,21 +60,19 @@ const StoreContextProvider = ({ children }) => {
 
   // ─── Cargar carrito desde el servidor ───
   const loadCartData = useCallback(async (tkn) => {
-  try {
-    const response = await axios.post(
-      url + "/api/cart/get",
-      {},
-      { headers: { token: tkn } }
-    );
-    // ✅ Verifica que cartData exista antes de setearlo
-    if (response.data.cartData) {
-      setCartItems(response.data.cartData);
+    try {
+      const response = await axios.post(
+        url + "/api/cart/get",
+        {},
+        { headers: { token: tkn } }
+      );
+      if (response.data.cartData) {
+        setCartItems(response.data.cartData);
+      }
+    } catch (error) {
+      console.warn("Carrito vacío o no encontrado:", error.message);
     }
-  } catch (error) {
-    // ✅ No rompe la app — el carrito simplemente queda vacío
-    console.warn("Carrito vacío o no encontrado:", error.message);
-  }
-}, []);
+  }, []);
 
   // ─── Agregar al carrito ───
   const addToCart = useCallback(async (itemId) => {
@@ -102,14 +112,15 @@ const StoreContextProvider = ({ children }) => {
     for (const itemId in cartItems) {
       if (cartItems[itemId] > 0) {
         const itemInfo = foodList.find((product) => product._id === itemId);
-        if (itemInfo) {
+        if (itemInfo && itemInfo.available) { // ✅ solo items disponibles
           totalAmount += itemInfo.price * cartItems[itemId];
         }
       }
     }
     return totalAmount;
   }, [cartItems, foodList]);
-  // Agregar esta función junto a las demás
+
+  // ─── Vaciar carrito ───
   const clearCart = useCallback(async () => {
     setCartItems({});
     if (token) {
@@ -121,7 +132,6 @@ const StoreContextProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Agregar clearCart al contextValue
   const contextValue = useMemo(() => ({
     food_list: foodList,
     cartItems,
@@ -133,7 +143,7 @@ const StoreContextProvider = ({ children }) => {
     token,
     setToken,
     loadCartData,
-    clearCart, // ✅ nuevo
+    clearCart,
   }), [foodList, cartItems, token, addToCart, removeFromCart, getTotalCartAmount, loadCartData, clearCart]);
 
   return (
@@ -142,7 +152,6 @@ const StoreContextProvider = ({ children }) => {
     </StoreContext.Provider>
   );
 };
-
 
 StoreContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

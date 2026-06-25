@@ -13,7 +13,7 @@ const Cart = () => {
     }
   };
 
-  const hasItems = food_list.some(item => cartItems[item._id] > 0);
+  const hasItems = food_list.some(item => cartItems[item._id] > 0 && item.available);
 
   return (
     <div className='cart'>
