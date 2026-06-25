@@ -109,8 +109,19 @@ const StoreContextProvider = ({ children }) => {
     }
     return totalAmount;
   }, [cartItems, foodList]);
+  // Agregar esta función junto a las demás
+  const clearCart = useCallback(async () => {
+    setCartItems({});
+    if (token) {
+      try {
+        await axios.post(url + "/api/cart/clear", {}, { headers: { token } });
+      } catch (error) {
+        console.error("Error al vaciar carrito:", error.message);
+      }
+    }
+  }, [token]);
 
-  // ─── Contexto memorizado ───
+  // Agregar clearCart al contextValue
   const contextValue = useMemo(() => ({
     food_list: foodList,
     cartItems,
@@ -122,7 +133,8 @@ const StoreContextProvider = ({ children }) => {
     token,
     setToken,
     loadCartData,
-  }), [foodList, cartItems, token, addToCart, removeFromCart, getTotalCartAmount, loadCartData]);
+    clearCart, // ✅ nuevo
+  }), [foodList, cartItems, token, addToCart, removeFromCart, getTotalCartAmount, loadCartData, clearCart]);
 
   return (
     <StoreContext.Provider value={contextValue}>
@@ -130,6 +142,7 @@ const StoreContextProvider = ({ children }) => {
     </StoreContext.Provider>
   );
 };
+
 
 StoreContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

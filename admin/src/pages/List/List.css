@@ -54,3 +54,37 @@
 .cursor:active {
     transform: scale(0.95); /* Reduce un poco al hacer clic */
 }
+
+
+/* ✅ Actualiza el grid para 6 columnas */
+.list-table-format {
+  grid-template-columns: 0.5fr 2fr 1fr 0.5fr 1fr 0.5fr;
+}
+
+.toggle-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.available:hover {
+  background-color: #c3e6cb;
+}
+
+.unavailable {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.unavailable:hover {
+  background-color: #f5c6cb;
+}

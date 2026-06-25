@@ -67,5 +67,14 @@ const getCart = async (req, res) => {
     res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 };
+const clearCart = async (req, res) => {
+  try {
+    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+    res.json({ success: true, message: "Carrito vaciado" });
+  } catch (error) {
+    console.error("Error en clearCart:", error);
+    res.status(500).json({ success: false, message: "Error interno" });
+  }
+};
 
-export { addToCart, removeFromCart, getCart };
+export { addToCart, removeFromCart, getCart, clearCart };
