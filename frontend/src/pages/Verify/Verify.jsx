@@ -6,30 +6,34 @@ import axios from 'axios'
 
 const Verify = () => {
 
-    //Parametros de la url unica respecto a una orden realizada
-    const [searchParams] = useSearchParams();
-    const success = searchParams.get("success");
-    const orderId = searchParams.get("orderId");
-    const {url} = useContext(StoreContext)
-    const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const success = searchParams.get("success");
+  const orderId = searchParams.get("orderId");
+  const { url } = useContext(StoreContext);
+  const navigate = useNavigate();
 
-    const verifyPayment = async () => { //Revisa la respuesta del pago de la orden
-        const response = await axios.post(url+"/api/order/verify", {success, orderId});
-        if (response.data.success){ //Si se paga redirige a mis ordenes
-            navigate("/myorders");
+  useEffect(() => {
+    const verifyPayment = async () => {
+      try {
+        const response = await axios.post(url + "/api/order/verify", { success, orderId });
+        if (response.data.success) {
+          navigate("/myorders");
+        } else {
+          console.error("Verify falló:", response.data.message);
+          navigate("/");
         }
-        else{ //Si no al inicio
-            navigate("/");
-        }
-    }
+      } catch (error) {
+        console.error("Error en verifyPayment:", error.message);
+        navigate("/");
+      }
+    };
 
-    useEffect(()=>{
-        verifyPayment();
-    },[])
+    verifyPayment(); // ✅ definida y llamada dentro del mismo useEffect
+  }, []);
 
-  return ( //Es una pagina auxiliar, feedback visual de que la pagina esta procesando el pago
+  return (
     <div className='verify'>
-        <div className='spinner'></div>
+      <div className='spinner'></div>
     </div>
   )
 }

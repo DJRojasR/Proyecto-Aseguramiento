@@ -63,3 +63,136 @@
   }
 }
 
+.my-orders { margin: 50px 0px; }
+
+.my-orders .container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.my-orders-order {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
+  align-items: center;
+  gap: 30px;
+  font-size: 14px;
+  padding: 10px 20px;
+  color: #454545;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.my-orders-order img { width: 50px; }
+
+.order-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.my-orders-order button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background-color: #81d4fa;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.my-orders-order button:hover { background-color: #6dcef1; transform: scale(1.02); }
+.my-orders-order button:active { transform: scale(0.98); }
+
+.btn-edit-order {
+  background-color: #f0ad4e !important;
+  color: white !important;
+}
+
+.btn-edit-order:hover { background-color: #ec971f !important; }
+
+/* Panel de edición */
+.edit-order-panel {
+  grid-column: 1 / -1;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 10px;
+}
+
+.edit-order-warning {
+  background: #fff8e1;
+  border-left: 4px solid #f0ad4e;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  color: #7a5c00;
+}
+
+.edit-order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 14px;
+}
+
+.edit-order-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.edit-order-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.edit-order-item span { flex: 1; }
+
+.edit-order-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-order-qty button {
+  width: 28px;
+  height: 28px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  font-size: 16px;
+  background-color: #e0e0e0 !important;
+  color: #333 !important;
+}
+
+.edit-order-qty span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.btn-confirm-edit {
+  background-color: #5cb85c !important;
+  width: 100%;
+  padding: 12px !important;
+  font-size: 14px !important;
+}
+
+.btn-confirm-edit:hover { background-color: #4cae4c !important; }
+
+@media (max-width: 900px) {
+  .my-orders-order {
+    grid-template-columns: 1fr 2fr 1fr;
+    row-gap: 5px;
+    font-size: 12px;
+  }
+}

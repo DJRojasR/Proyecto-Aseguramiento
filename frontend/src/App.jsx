@@ -9,6 +9,7 @@ import LoginPopup from './components/LoginPopup/LoginPopup';
 import Verify from "./pages/Verify/Verify";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import ScrollToTopButton from './components/ScrollToTopButton/ScrollToTopButton';
+import VerifyExtra from './pages/Verify/VerifyExtra.jsx';
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             {/* Creamos una ruta con el path /order y el componente PlaceOrder */}
             <Route path='/order' element={<PlaceOrder/>} />
             <Route path='/verify' element={<Verify/>} />
+            <Route path="/verify-extra" element={<VerifyExtra />} />
             <Route path='/myorders' element={<MyOrders/>} />
           </Routes>
       </div>

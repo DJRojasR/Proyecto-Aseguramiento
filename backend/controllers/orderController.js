@@ -114,6 +114,82 @@ const userOrders= async (req,res)=>{
 };
 
 
+const addItemsToOrder = async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.body.orderId);
+    if (!order) {
+      return res.json({ success: false, message: "Orden no encontrada" });
+    }
+    if (order.userId !== req.body.userId) {
+      return res.json({ success: false, message: "No autorizado" });
+    }
+    // ✅ Solo bloquear si ya fue entregado o en camino
+    if (order.status === "Out for Delivery" || order.status === "Delivered") {
+      return res.json({ success: false, message: "No se puede modificar un pedido que ya salió a entrega." });
+    }
 
+    const existingItems = order.items;
+    const newItems = req.body.items;
 
-export {placeOrder,verifyOrder,userOrders,listOrders, updateStatus}; 
+    // Combinar items — solo agregar, nunca reducir
+    newItems.forEach(newItem => {
+      const existing = existingItems.find(i => String(i._id) === String(newItem._id));
+      if (existing) {
+        existing.quantity += newItem.quantity;
+      } else {
+        existingItems.push(newItem);
+      }
+    });
+
+    const newAmount = existingItems.reduce(
+      (sum, item) => sum + item.price * item.quantity, 0
+    ) + 2;
+
+    // Calcular solo el monto adicional para cobrar en Stripe
+    const additionalAmount = newItems.reduce(
+      (sum, item) => sum + item.price * item.quantity, 0
+    );
+
+    const frontendUrl = "http://localhost:5173";
+
+    const line_items = newItems.map(item => ({
+      price_data: {
+        currency: "pen",
+        product_data: { name: item.name + " (adicional)" },
+        unit_amount: item.price * 100,
+      },
+      quantity: item.quantity
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      line_items,
+      mode: 'payment',
+      success_url: `${frontendUrl}/verify-extra?success=true&orderId=${order._id}`,
+      cancel_url:  `${frontendUrl}/myorders`
+    });
+
+    // Guardar items y monto actualizados antes de redirigir a Stripe
+    await orderModel.findByIdAndUpdate(order._id, {
+      items: existingItems,
+      amount: newAmount
+    });
+
+    res.json({ success: true, session_url: session.url });
+
+  } catch (error) {
+    console.error("Error en addItemsToOrder:", error);
+    res.json({ success: false, message: "Error al modificar la orden" });
+  }
+};
+
+const revertExtra = async (req, res) => {
+  try {
+    // En un sistema real guardarías un snapshot antes del cambio
+    // Para pruebas solo notificamos
+    res.json({ success: true, message: "Revertido" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus, addItemsToOrder, revertExtra };
