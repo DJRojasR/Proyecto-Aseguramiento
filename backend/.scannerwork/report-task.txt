@@ -1,6 +1,6 @@
-projectKey=JuliaFish
+projectKey=backend
 serverUrl=http://localhost:9000
 serverVersion=26.6.0.123539
 dashboardUrl=http://localhost:9000/dashboard?id=backend
-ceTaskId=947eeced-4cb6-40b2-b65b-9ae80a647907
-ceTaskUrl=http://localhost:9000/api/ce/task?id=947eeced-4cb6-40b2-b65b-9ae80a647907
+ceTaskId=6cf40580-f05a-4f06-ac4f-36534c62c027
+ceTaskUrl=http://localhost:9000/api/ce/task?id=6cf40580-f05a-4f06-ac4f-36534c62c027
