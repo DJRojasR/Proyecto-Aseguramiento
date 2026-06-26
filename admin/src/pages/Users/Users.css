@@ -87,3 +87,52 @@
 .role-toggle-btn:hover {
   background-color: #f0f0f0;
 }
+
+.user-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.user-search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 300px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.user-search-input:focus {
+  border-color: #428bca;
+}
+
+.user-search-clear {
+  padding: 8px 12px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.2s ease;
+}
+
+.user-search-clear:hover {
+  background: #e0e0e0;
+}
+
+.user-search-count {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.user-no-results {
+  text-align: center;
+  color: #999;
+  padding: 20px 0;
+  font-size: 13px;
+}

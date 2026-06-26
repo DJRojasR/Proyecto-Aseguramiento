@@ -3,32 +3,30 @@ import "./MyOrders.css";
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { assets } from '../../assets/assets';
-import { useNavigate } from 'react-router-dom';
 
 const MyOrders = () => {
   const { url, token, food_list } = useContext(StoreContext);
   const [data, setData] = useState([]);
   const [editingOrder, setEditingOrder] = useState(null);
   const [selectedItems, setSelectedItems] = useState({});
-  const navigate = useNavigate();
 
   const fetchOrders = async () => {
-  const response = await axios.post(url + "/api/order/userorders", {}, { headers: { token } });
-  console.log("Órdenes:", response.data.data); // ✅ ver payment de cada orden
-  setData(response.data.data);
-};
+    const response = await axios.post(url + "/api/order/userorders", {}, { headers: { token } });
+    setData(response.data.data);
+  };
 
   useEffect(() => {
     if (token) fetchOrders();
   }, [token]);
 
+  // ✅ Fuera del .map() para que esté disponible correctamente
   const getStatusLabel = (order) => {
     if (!order.payment) return { label: "Pendiente de pago", color: "#f0ad4e" };
     switch (order.status) {
-      case "Food Processing": return { label: "Procesando",   color: "#5bc0de" };
-      case "Out for Delivery": return { label: "En camino",   color: "#428bca" };
-      case "Delivered":        return { label: "Entregado",   color: "#5cb85c" };
-      default:                 return { label: order.status,  color: "#999"    };
+      case "Food Processing": return { label: "Preparando",  color: "#5bc0de" };
+      case "Out for Delivery": return { label: "Enviando",   color: "#428bca" };
+      case "Delivered":        return { label: "Recibido",   color: "#5cb85c" };
+      default:                 return { label: order.status, color: "#999"    };
     }
   };
 
@@ -50,7 +48,6 @@ const MyOrders = () => {
       alert("Debes agregar al menos un producto.");
       return;
     }
-
     const itemsToAdd = food_list
       .filter(f => selectedItems[f._id])
       .map(f => ({ ...f, quantity: selectedItems[f._id] }));
@@ -73,9 +70,9 @@ const MyOrders = () => {
       <h2>Mis ordenes</h2>
       <div className="container">
         {data.map((order) => {
+          // ✅ Desestructurar aquí, dentro del map
           const { label, color } = getStatusLabel(order);
-          // ✅ Ahora — permite editar si está pagado pero aún no salió a delivery
-          const isPending = order.status === "Food Processing" || order.status === "Procesando";
+          const isPending = order.payment && order.status === "Food Processing";
 
           return (
             <div key={order._id} className="my-orders-order">
@@ -90,7 +87,6 @@ const MyOrders = () => {
               <p>S/. {order.amount}.00</p>
               <p>Items: {order.items.length}</p>
 
-              {/* ✅ Badge de estado */}
               <p>
                 <span style={{ color }}>&#x25cf;</span>{" "}
                 <b style={{ color }}>{label}</b>
@@ -98,8 +94,6 @@ const MyOrders = () => {
 
               <div className="order-actions">
                 <button onClick={fetchOrders}>Seguir orden</button>
-
-                {/* ✅ Solo pedidos sin pagar pueden editarse */}
                 {isPending && (
                   <button
                     className="btn-edit-order"
@@ -113,7 +107,6 @@ const MyOrders = () => {
                 )}
               </div>
 
-              {/* ✅ Panel de edición */}
               {editingOrder === order._id && (
                 <div className="edit-order-panel">
                   <div className="edit-order-warning">
@@ -132,10 +125,7 @@ const MyOrders = () => {
                       </div>
                     ))}
                   </div>
-                  <button
-                    className="btn-confirm-edit"
-                    onClick={() => handleSubmitEdit(order._id)}
-                  >
+                  <button className="btn-confirm-edit" onClick={() => handleSubmitEdit(order._id)}>
                     Confirmar y pagar adicional
                   </button>
                 </div>
