@@ -1,9 +1,5 @@
 import express from 'express';
-<<<<<<< HEAD
-import { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability } from '../controllers/foodController.js';
-=======
-import { addFood, listFood, removeFood, toggleAvailability, updateFood } from '../controllers/foodController.js';
->>>>>>> e30aeb39a004256e3a623ec3d2739863f3069bf3
+import { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability, updateFood } from '../controllers/foodController.js';
 import multer from 'multer';
 
 const foodRoute = express.Router();

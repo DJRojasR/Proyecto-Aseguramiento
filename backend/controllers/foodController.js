@@ -2,7 +2,7 @@ import foodModel from "../models/foodModels.js";
 import fs from "node:fs";
 
 const addFood = async (req, res) => {
-  // ✅ Validaciones del lado del servidor
+  //Validaciones del lado del servidor
   const name = req.body.name?.trim();
   const description = req.body.description?.trim();
   const price = Number(req.body.price);
@@ -81,7 +81,6 @@ const toggleAvailability = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 // Solo para el admin — sin filtro
 const listFoodAdmin = async (req, res) => {
   try {
@@ -92,8 +91,6 @@ const listFoodAdmin = async (req, res) => {
   }
 };
 
-export { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability };
-=======
 const updateFood = async (req, res) => {
   try {
     const { id, name, description, price, category } = req.body;
@@ -132,5 +129,4 @@ const updateFood = async (req, res) => {
   }
 };
 
-export { addFood, listFood, removeFood, toggleAvailability, updateFood };
->>>>>>> e30aeb39a004256e3a623ec3d2739863f3069bf3
+export { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability, updateFood };
