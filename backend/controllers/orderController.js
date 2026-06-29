@@ -57,23 +57,21 @@ const placeOrder = async (req, res) => {
     }
 }
 const verifyOrder = async (req, res) => {
-    const {orderId,success}=req.body;
-    try{
-            if(success=="true"){
-                await orderModel.findByIdAndUpdate(orderId, {payment:true});
-                res.json({success:true, message:"Paid"})
-
-
-            }
-            else{
-                await orderModel.findByIdAndDelete(orderId);
-                res.json({success:false, message:"Not paid"});
-
-            }
-    }catch(error){
+    const { orderId, success } = req.body;
+    try {
+        if (success === "true") {
+            // Pago exitoso: Confirmamos el pago y asignamos el estado inicial de preparación
+            await orderModel.findByIdAndUpdate(orderId, { payment: true, status: "Food Processing" });
+            res.json({ success: true, message: "Paid" });
+        } 
+        else {
+            // SOLUCIÓN AL SQA: Cambiamos findByIdAndDelete por un borrado lógico (actualización de estado)
+            await orderModel.findByIdAndUpdate(orderId, { status: "Pago Fallido" });
+            res.json({ success: false, message: "Not paid" });
+        }
+    } catch (error) {
         console.log(error);
-        res.json({success:false, message:"Error al verificar la orden"})
-
+        res.json({ success: false, message: "Error al verificar la orden" });
     }
 }
 

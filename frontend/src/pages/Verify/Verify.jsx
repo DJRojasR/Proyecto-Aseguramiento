@@ -20,7 +20,8 @@ const Verify = () => {
           navigate("/myorders");
         } else {
           console.error("Verify falló:", response.data.message);
-          navigate("/");
+          alert("El pago no pudo ser completado. Puedes revisarlo o reintentarlo en tus órdenes.");
+          navigate("/myorders");
         }
       } catch (error) {
         console.error("Error en verifyPayment:", error.message);

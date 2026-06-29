@@ -1,6 +1,7 @@
 import foodModel from "../models/foodModels.js";
 import fs from "node:fs";
 
+// 1. CREAR ITEM
 const addFood = async (req, res) => {
   //Validaciones del lado del servidor
   const name = req.body.name?.trim();
@@ -37,6 +38,8 @@ const addFood = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// 2. LISTAR ITEMS (Para Clientes - Solo disponibles)
 const listFood = async (req, res) => {
   try {
     const foods = await foodModel.find({available: true });
@@ -47,6 +50,7 @@ const listFood = async (req, res) => {
   }
 };
 
+// 3. ELIMINAR ITEM (Físico)
 const removeFood = async (req, res) => {
   try {
     const food = await foodModel.findById(req.body.id);
@@ -62,7 +66,7 @@ const removeFood = async (req, res) => {
   }
 };
 
-// Nuevo: activa o desactiva disponibilidad
+// 4. CONMUTAR DISPONIBILIDAD (Borrado Lógico)
 const toggleAvailability = async (req, res) => {
   try {
     const food = await foodModel.findById(req.body.id);
@@ -81,7 +85,7 @@ const toggleAvailability = async (req, res) => {
   }
 };
 
-// Solo para el admin — sin filtro
+// 5. LISTAR ITEMS (Para Admin - Todo el catálogo)
 const listFoodAdmin = async (req, res) => {
   try {
     const foods = await foodModel.find({});
@@ -91,6 +95,7 @@ const listFoodAdmin = async (req, res) => {
   }
 };
 
+// 6. ACTUALIZAR ITEM (Modificación del Menú)
 const updateFood = async (req, res) => {
   try {
     const { id, name, description, price, category } = req.body;
@@ -115,7 +120,7 @@ const updateFood = async (req, res) => {
       category:    category            || food.category,
     };
 
-    // Si se subió nueva imagen
+    // Si el administrador subió una nueva imagen, reemplaza la anterior
     if (req.file) {
       fs.unlink(`uploads/${food.image}`, () => {});
       updatedFields.image = req.file.filename;
@@ -129,4 +134,5 @@ const updateFood = async (req, res) => {
   }
 };
 
+// EXPORTACIÓN ÚNICA DE MÓDULOS
 export { addFood, listFood, listFoodAdmin, removeFood, toggleAvailability, updateFood };

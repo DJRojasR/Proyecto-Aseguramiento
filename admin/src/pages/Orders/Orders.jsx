@@ -64,10 +64,23 @@ const Orders = ({ url }) => {
             </div>
             <p>Items: {order.items.length}</p>
             <p>Precio Total: {order.amount} PEN</p>
-            <select onChange={(e) => statusHandler(e, order._id)} value={order.status} className="order-item-status">
-              <option value="Food Processing">Preparando</option>
-              <option value="Out for Delivery">Enviando</option>
-              <option value="Delivered">Recibido</option>
+
+            <select 
+              onChange={(e) => statusHandler(e, order._id)} 
+              value={order.status} 
+              className="order-item-status"
+              disabled={order.status === "Pago Fallido"} // Bloquea si no está pagado
+              style={order.status === "Pago Fallido" ? { borderColor: "#d9534f", color: "#d9534f" } : {}}
+            >
+              {order.status === "Pago Fallido" ? (
+                <option value="Pago Fallido">Pago Rechazado</option>
+              ) : (
+                <>
+                  <option value="Food Processing">Preparando</option>
+                  <option value="Out for Delivery">Enviando</option>
+                  <option value="Delivered">Recibido</option>
+                </>
+              )}
             </select>
           </div>
         ))}

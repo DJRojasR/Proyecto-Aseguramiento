@@ -19,9 +19,11 @@ const MyOrders = () => {
     if (token) fetchOrders();
   }, [token]);
 
-  // ✅ Fuera del .map() para que esté disponible correctamente
+  // CORREGIDO: Mapeo explícito del nuevo estado transaccional para el SQA
   const getStatusLabel = (order) => {
+    if (order.status === "Pago Fallido") return { label: "Pago Rechazado / Cancelado", color: "#d9534f" };
     if (!order.payment) return { label: "Pendiente de pago", color: "#f0ad4e" };
+    
     switch (order.status) {
       case "Food Processing": return { label: "Preparando",  color: "#5bc0de" };
       case "Out for Delivery": return { label: "Enviando",   color: "#428bca" };
@@ -70,9 +72,9 @@ const MyOrders = () => {
       <h2>Mis ordenes</h2>
       <div className="container">
         {data.map((order) => {
-          // ✅ Desestructurar aquí, dentro del map
           const { label, color } = getStatusLabel(order);
           const isPending = order.payment && order.status === "Food Processing";
+          const isFailedPayment = order.status === "Pago Fallido";
 
           return (
             <div key={order._id} className="my-orders-order">
@@ -93,7 +95,18 @@ const MyOrders = () => {
               </p>
 
               <div className="order-actions">
-                <button onClick={fetchOrders}>Seguir orden</button>
+                {/* ✅ CORREGIDO: Si el pago falló, deshabilitamos o cambiamos la acción de seguimiento */}
+                {isFailedPayment ? (
+                  <button 
+                    style={{ backgroundColor: "#6c757d", cursor: "not-allowed" }} 
+                    disabled
+                  >
+                    No procesado
+                  </button>
+                ) : (
+                  <button onClick={fetchOrders}>Seguir orden</button>
+                )}
+
                 {isPending && (
                   <button
                     className="btn-edit-order"
