@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const Users = ({ url }) => {
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState(""); // ✅ estado del buscador
 
   const fetchList = useCallback(async () => {
     const response = await axios.get(`${url}/api/user/list`);
@@ -16,17 +17,20 @@ const Users = ({ url }) => {
     }
   }, [url]);
 
-  const removeUser = async (userID) => {
+  const removeUser = async (userID, userName) => {
+    // ✅ Confirmación antes de eliminar
+    const confirmed = window.confirm(`¿Estás seguro de eliminar al usuario "${userName}"? Esta acción no se puede deshacer.`);
+    if (!confirmed) return;
+
     const response = await axios.post(`${url}/api/user/remove`, { id: userID });
     await fetchList();
     if (response.data.success) {
       toast.success("Usuario removido correctamente", { autoClose: 1500 });
     } else {
-      toast.error("Error al remover el item", { autoClose: 1500 });
+      toast.error("Error al remover el usuario", { autoClose: 1500 });
     }
   };
 
-  // ✅ Nuevo: cambiar rol del usuario
   const toggleRole = async (userID, currentRole) => {
     const newRole = currentRole === "admin" ? "customer" : "admin";
     const response = await axios.post(`${url}/api/user/update-role`, {
@@ -45,9 +49,37 @@ const Users = ({ url }) => {
     fetchList();
   }, [fetchList]);
 
+  // ✅ Filtrar por nombre o email
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(search.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="list add flex-col users-section">
       <p>Lista de Usuarios</p>
+
+      {/* ✅ Barra de búsqueda */}
+      <div className="user-search-bar">
+        <input
+          type="text"
+          placeholder="Buscar por nombre o email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="user-search-input"
+        />
+        {search && (
+          <button onClick={() => setSearch("")} className="user-search-clear">
+            ✕ Limpiar
+          </button>
+        )}
+      </div>
+
+      {/* ✅ Contador de resultados */}
+      <p className="user-search-count">
+        {filteredUsers.length} usuario{filteredUsers.length !== 1 ? "s" : ""} encontrado{filteredUsers.length !== 1 ? "s" : ""}
+      </p>
+
       <div className="list-table">
         <div className="list-table-format title">
           <b>Nombre</b>
@@ -55,12 +87,12 @@ const Users = ({ url }) => {
           <b>Rol</b>
           <b>Acción</b>
         </div>
-        {users.map((item) => (
+
+        {filteredUsers.length > 0 ? filteredUsers.map((item) => (
           <div key={item._id} className="list-table-format">
             <p>{item.name}</p>
             <p>{item.email}</p>
 
-            {/* ✅ Badge de rol + botón para cambiar */}
             <div className="role-cell">
               <span className={`role-badge ${item.role === "admin" ? "role-admin" : "role-customer"}`}>
                 {item.role === "admin" ? "Admin" : "Cliente"}
@@ -73,11 +105,14 @@ const Users = ({ url }) => {
               </button>
             </div>
 
-            <button onClick={() => removeUser(item._id)} className="cursor">
+            <button onClick={() => removeUser(item._id, item.name)} className="cursor">
               Eliminar
             </button>
           </div>
-        ))}
+        )) : (
+          // ✅ Mensaje si no hay resultados
+          <p className="user-no-results">No se encontraron usuarios con "{search}"</p>
+        )}
       </div>
     </div>
   );

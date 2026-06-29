@@ -20,7 +20,7 @@
 }
 
 .cart-items-item button {
-    padding: 3px 0px;/*Espacio interno*/
+    padding: 3px 0px;
     width: max(4.5vw,50px);
     background-color: rgb(231, 31, 31);
     color: white;
@@ -32,20 +32,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Transición suave */
     transition: all 0.3s ease-in-out;
 }
 
-/* Efecto al pasar el mouse */
 .cart-items-item button:hover {
-    background-color: red; /* Cambia el color */
-    transform: scale(1.1); /* Aumenta un 10% el tamaño */
+    background-color: red;
+    transform: scale(1.1);
 }
 
-/* Efecto al hacer clic */
 .cart-items-item button:active {
-    transform: scale(0.95); /* Reduce un poco al hacer clic */
+    transform: scale(0.95);
 }
 
 .cart-bottom{
@@ -70,11 +66,18 @@
 
 .cart-total hr{
     margin: 10px 0;
-
 }
-.cart-total button{
-    
-    background-color: rgb(24, 210, 24);
+
+.cart-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ✅ Botón proceder — estilos base para botones del cart-total */
+.cart-total button {
+    background-color: rgb(56, 154, 196);
     color: white;
     border: none;
     border-radius: 5px;
@@ -83,27 +86,46 @@
     text-align: center;
     display: flex;
     align-items: center;
-    align-self: center;/*Para centrarlo en el medio*/
+    align-self: center;
     justify-content: center;
-    width: max(15vw,200px);
-    padding: 12px 0px;/*Espacio interno*/
-    /* Transición suave */
+    width: max(15vw, 200px);
+    padding: 12px 0px;
     transition: all 0.3s ease-in-out;
 }
 
-/* Efecto al pasar el mouse */
 .cart-total button:hover {
-    background-color: rgb(3, 233, 3); /* Cambia el color */
-    transform: scale(1.1); /* Aumenta un 10% el tamaño */
+    transform: scale(1.1);
 }
 
-/* Efecto al hacer clic */
 .cart-total button:active {
-    transform: scale(0.95); /* Reduce un poco al hacer clic */
+    transform: scale(0.95);
+}
+
+/* ✅ Debe ir DESPUÉS de .cart-total button para sobreescribirlo */
+.btn-clear-cart {
+    background-color: #e74c3c !important;
+    color: #f5f5f5 !important;
+    border: 2px solid  !important;
+    padding: 10px 0px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    width: max(15vw, 200px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-clear-cart:hover {
+    background-color: #e74c3c !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+}
+
+.btn-clear-cart:active {
+    transform: scale(0.95) !important;
 }
 
 .cart-promocode{
-    flex:1;
+    flex: 1;
 }
 
 .cart-promocode p{
@@ -127,12 +149,19 @@
 }
 
 .cart-promocode-input button{
-    width: max(9.5vw,150px);
+    width: max(9.5vw, 150px);
     padding: 12px 5px;
     background-color: black;
     border: none;
     color: white;
     border-radius: 4px;
+}
+
+.cart-empty {
+    text-align: center;
+    color: #999;
+    padding: 20px 0;
+    font-size: 14px;
 }
 
 @media(max-width: 750px){
@@ -142,34 +171,4 @@
     .cart-promocode{
         justify-content: start;
     }
-}
-
-.cart-empty {
-  text-align: center;
-  color: #999;
-  padding: 20px 0;
-  font-size: 14px;
-}
-
-.cart-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.btn-clear-cart {
-  background-color: #fff;
-  color: #e74c3c;
-  border: 2px solid #e74c3c;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-clear-cart:hover {
-  background-color: #e74c3c;
-  color: white;
 }

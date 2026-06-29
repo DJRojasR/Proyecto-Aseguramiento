@@ -20,37 +20,44 @@ const Add = ({url}) => {
     setData((data) => ({ ...data, [name]: value }));
   };
   const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("price", Number(data.price));
-    formData.append("category", data.category);
-    formData.append("image", image);
-    const response = await axios.post(`${url}/api/food/addfood`, formData);
-console.log("Respuesta del servidor:", response.data);
+  event.preventDefault();
 
-    if (response.data.sucess) {
-      setData({
-        name: "",
-        description: "",
-        price: "",
-        category: "Ceviche",
-      });
+  // ✅ Validaciones antes de enviar
+  if (!image) {
+    toast.error("Por favor sube una imagen.", { autoClose: 1500 });
+    return;
+  }
+  if (data.name.trim().length < 2) {
+    toast.error("El nombre debe tener al menos 2 caracteres.", { autoClose: 1500 });
+    return;
+  }
+  if (data.description.trim().length < 10) {
+    toast.error("La descripción debe tener al menos 10 caracteres.", { autoClose: 1500 });
+    return;
+  }
+  const price = Number(data.price);
+  if (!price || price <= 0 || price > 9999) {
+    toast.error("El precio debe ser un número entre 1 y 9999.", { autoClose: 1500 });
+    return;
+  }
 
-      setImage(false);
-      toast.success("Item agregado correctamente!", {
-        autoClose: 1500,
-        
-      }); 
-     
-    } else {
-      toast.error( "Error al agregar el item",{
-        autoClose: 1500,
-      });
+  const formData = new FormData();
+  formData.append("name", data.name.trim());
+  formData.append("description", data.description.trim());
+  formData.append("price", price);
+  formData.append("category", data.category);
+  formData.append("image", image);
 
-     }
-  };
+  const response = await axios.post(`${url}/api/food/addfood`, formData);
+
+  if (response.data.success) {
+    setData({ name: "", description: "", price: "", category: "Ceviche" });
+    setImage(false);
+    toast.success("Item agregado correctamente!", { autoClose: 1500 });
+  } else {
+    toast.error("Error al agregar el item", { autoClose: 1500 });
+  }
+};
 
   return (
     <div className="add">
@@ -76,13 +83,14 @@ console.log("Respuesta del servidor:", response.data);
         <div className="add-product-name flex-col">
           <p>Product name</p>
           <input
-            onChange={onChangeHandler}
-            value={data.name}
-            type="text"
-            name="name"
-            placeholder="Type here"
-            required
-          />
+          onChange={onChangeHandler}
+          value={data.name}
+          type="text"
+          name="name"
+          placeholder="Type here"
+          required
+          maxLength={60}        // ✅ máximo 60 caracteres
+        />
         </div>
         <div className="add-product-description flex-col">
           <p>Product description</p>
@@ -93,6 +101,7 @@ console.log("Respuesta del servidor:", response.data);
             rows="6"
             placeholder="Write content here"
             required
+            maxLength={300}       // ✅ máximo 300 caracteres
           />
         </div>
         <div className="add-category-price">
@@ -121,11 +130,17 @@ console.log("Respuesta del servidor:", response.data);
             <p>Price</p>
             <input
               onChange={onChangeHandler}
+              onKeyDown={(e) => {
+                // ✅ Bloquea 'e', 'E', '+', '-'
+                if (['e', 'E', '+', '-'].includes(e.key)) e.preventDefault();
+              }}
               value={data.price}
               type="number"
               name="price"
               placeholder="Type here"
               required
+              min={1}              // ✅ mínimo 1
+              max={9999}           // ✅ máximo 9999
             />
           </div>
         </div>

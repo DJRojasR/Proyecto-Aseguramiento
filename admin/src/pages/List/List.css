@@ -1,74 +1,70 @@
-.list-table-format{
-	display: grid;
-	grid-template-columns: 0.5fr 2fr 1fr 0.5fr 0.5fr ;
-	align-items: center;
-	gap:10px;
-	padding: 12px 15px;
-	border: 1px solid #cacacaca;
-	font-size: 13px;
-
-
-}
-.list-table-format.title{
-	background-color: #f9f9f9;
-}
-.list-table-format img{
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;	
-}
-@media(max-width: 600px){
-	.list-table-format{
-		grid-template-columns: 1fr 3fr 1fr;
-		gap: 15px;
-	}
-	.list-table-format.title{
-		display: none;
-	}
-}
-.cursor{
-	padding: 3px 0px;/*Espacio interno*/
-    width: max(4.5vw,50px);
-    background-color: rgb(231, 31, 31);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 11px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Transición suave */
-    transition: all 0.3s ease-in-out;
-}
-
-/* Efecto al pasar el mouse */
-.cursor:hover {
-    background-color: red; /* Cambia el color */
-    transform: scale(1.1); /* Aumenta un 10% el tamaño */
-}
-
-/* Efecto al hacer clic */
-.cursor:active {
-    transform: scale(0.95); /* Reduce un poco al hacer clic */
-}
-
-
-/* ✅ Actualiza el grid para 6 columnas */
 .list-table-format {
-  grid-template-columns: 0.5fr 2fr 1fr 0.5fr 1fr 0.5fr;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr; /* ✅ 7 columnas balanceadas */
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #cacacaca;
+  font-size: 13px;
+}
+
+.list-table-format.title {
+  background-color: #f9f9f9;
+}
+
+.list-table-format img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+@media(max-width: 600px) {
+  .list-table-format {
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 15px;
+  }
+  .list-table-format.title {
+    display: none;
+  }
+}
+
+.cursor {
+  padding: 3px 0px;
+  width: max(4.5vw, 50px);
+  background-color: rgb(231, 31, 31);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.cursor:hover {
+  background-color: red;
+  transform: scale(1.1);
+}
+
+.cursor:active {
+  transform: scale(0.95);
 }
 
 .toggle-btn {
-  padding: 4px 10px;
+  padding: 4px 6px;
   border: none;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  max-width: 200px;   /* ✅ ancho máximo */
+  width: fit-content; /* ✅ solo el espacio necesario */
+  text-align: center;
 }
 
 .available {
@@ -88,3 +84,104 @@
 .unavailable:hover {
   background-color: #f5c6cb;
 }
+
+.edit-btn {
+  padding: 4px 6px;
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;       /* ✅ mismo tamaño que toggle */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+  width: 50%;
+  text-align: center;
+}
+
+.edit-btn:hover { background-color: #ec971f; }
+
+/* Modal */
+.edit-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.edit-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-modal h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.edit-modal label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+.edit-modal input,
+.edit-modal textarea,
+.edit-modal select {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.edit-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.edit-modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-save {
+  flex: 1;
+  padding: 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-save:hover { background-color: #4cae4c; }
+
+.btn-cancel-edit {
+  flex: 1;
+  padding: 10px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-cancel-edit:hover { background-color: #e0e0e0; }
